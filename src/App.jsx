@@ -8,11 +8,7 @@ import Registration from "./pages/Registration";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route
-      path="/"
-      element={<Registration />}  
-    >  
-    </Route>
+    <Route  path="/" element={<Registration />}>  </Route>
   )
 );
 
