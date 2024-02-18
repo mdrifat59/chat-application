@@ -1,5 +1,6 @@
 import React from 'react'
 import { Grid } from '@mui/material'
+import registrationimg from '../assets/registrationimg.png'
 
 const Registration = () => {
   return (
@@ -8,7 +9,7 @@ const Registration = () => {
     <h1>xs=8</h1>
   </Grid>
   <Grid item xs={6}>
-    <h1>xs=4</h1>
+    <img className='regiimg' src={registrationimg} />
   </Grid> 
 </Grid>
   )
