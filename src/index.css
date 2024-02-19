@@ -12,6 +12,11 @@
 }
 .regcontainer{
     margin-left: auto;
-    width: 50%;
-    background:  red;
+    width: 50%; 
+}
+.reginput{
+    margin-top: 20px;
+}
+.reginput .MuiTextField-root{
+    width: 80%;
 }
