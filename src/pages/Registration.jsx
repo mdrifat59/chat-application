@@ -19,7 +19,7 @@ const Registration = () => {
       <div className='reginput'>
       <TextField id="outlined-basic" label="Password" variant="outlined" />
       </div> 
-      <Button variant="contained">Sing up</Button> 
+      <Button className='regbutton' variant="contained">Sing up</Button> 
     </div>
   </Grid>
   <Grid item xs={6}>
