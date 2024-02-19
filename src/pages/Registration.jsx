@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid,TextField } from '@mui/material'
+import { Grid,TextField,Button } from '@mui/material'
 import registrationimg from '../assets/registrationimg.png' 
 import Headingforreglog from '../components/Headingforreglog'
 
@@ -18,7 +18,8 @@ const Registration = () => {
       </div>
       <div className='reginput'>
       <TextField id="outlined-basic" label="Password" variant="outlined" />
-      </div>
+      </div> 
+      <Button variant="contained">Sing up</Button> 
     </div>
   </Grid>
   <Grid item xs={6}>
