@@ -7,7 +7,9 @@ const Registration = () => {
   return (
     <Grid container spacing={2}>
   <Grid item xs={6}>
+    <div className='regcontainer'> 
       <Headingforreglog className="headingreglog" title="Get started with easily register"/>
+    </div>
   </Grid>
   <Grid item xs={6}>
     <img className='regiimg' src={registrationimg} />

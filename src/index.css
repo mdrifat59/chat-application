@@ -10,3 +10,8 @@
 .headingreglog{
     font-family: "Nunito", sans-serif;
 }
+.regcontainer{
+    margin-left: auto;
+    width: 50%;
+    background:  red;
+}
