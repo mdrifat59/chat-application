@@ -32,7 +32,9 @@ const Registration = () => {
       createUserWithEmailAndPassword(auth,email,password).then((user)=>{
             console.log(user)
             setValues({
-              ...values,
+              email:"",
+              fullName:"",
+              password:"",
                loagding: false
             })
       })
@@ -44,13 +46,13 @@ const Registration = () => {
       <Headingforreglog className="headingreglog" title="Get started with easily register"/>
       <p>Free register and you can enjoy it</p>
       <div className='reginput'> 
-      <TextField onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />
+      <TextField value={values.email} onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />
       </div>
       <div className='reginput'>
-      <TextField onChange={handleValues} name='fullName' id="outlined-basic" label="Full Name" variant="outlined" />
+      <TextField value={values.fullName} onChange={handleValues} name='fullName' id="outlined-basic" label="Full Name" variant="outlined" />
       </div>
       <div className='reginput'>
-      <TextField type='password' onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
+      <TextField value={values.password} type='password' onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
       </div>
       {values.loading
       ?
