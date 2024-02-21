@@ -4,6 +4,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import registrationimg from '../assets/registrationimg.png' 
 import Headingforreglog from '../components/Headingforreglog'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 let initialvalues ={
   email:"",
@@ -13,7 +14,7 @@ let initialvalues ={
 }
 
 const Registration = () => {
-
+    let navigate = useNavigate();
   const auth = getAuth();
   let [values,setValues]=useState(initialvalues)
 
@@ -37,6 +38,7 @@ const Registration = () => {
               password:"",
                loagding: false
             })
+            navigate("/login")
       })
   }
   return (
