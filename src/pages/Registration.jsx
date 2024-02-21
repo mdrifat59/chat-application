@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Grid,TextField,Button } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton';
 import registrationimg from '../assets/registrationimg.png' 
 import Headingforreglog from '../components/Headingforreglog'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
@@ -7,7 +8,8 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 let initialvalues ={
   email:"",
  fullName:"",
- password:""
+ password:"",
+ loading:false
 }
 
 const Registration = () => {
@@ -23,8 +25,16 @@ const Registration = () => {
   }
   let handleSubmit=()=>{
       let {email, fullName, password}=values
+      setValues({
+        ...values,
+         loagding: true
+      })
       createUserWithEmailAndPassword(auth,email,password).then((user)=>{
             console.log(user)
+            setValues({
+              ...values,
+               loagding: false
+            })
       })
   }
   return (
@@ -41,8 +51,16 @@ const Registration = () => {
       </div>
       <div className='reginput'>
       <TextField type='password' onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
-      </div> 
+      </div>
+      {values.loading
+      ?
+      <LoadingButton loading variant="outlined">
+        Submit
+      </LoadingButton>
+      :
       <Button onClick={handleSubmit} className='regbutton' variant="contained">Sing up</Button> 
+    }
+      
     </div>
   </Grid>
   <Grid item xs={6}>
