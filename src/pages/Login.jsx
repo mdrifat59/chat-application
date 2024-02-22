@@ -8,12 +8,14 @@ import { getAuth, signInWithEmailAndPassword,signInWithPopup } from "firebase/au
 import { GoogleAuthProvider } from "firebase/auth";
 import Alert from '@mui/material/Alert';
 import { Link } from "react-router-dom";
+import { FaEye,FaRegEyeSlash } from "react-icons/fa";
 
 
 let initialvalues ={
   email:"", 
  password:"",
- loading:false
+ loading:false,
+ eye:false
 }
 
 
@@ -58,7 +60,15 @@ const Login = () => {
         <TextField value={values.email} onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />
         </div> 
         <div className='reginput'>
-        <TextField type='password' value={values.password} onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
+        <TextField style={{position:"relative"}} value={values.password} type={values.eye ? 'text' : 'password'} onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
+        <div onClick={()=>setValues({...values,eye:!values.eye})} className='eye'>
+        {values.eye
+          ?
+          <FaEye style={{position:"absolute", top:"225px", right:"75px"}}/>
+          :
+          <FaRegEyeSlash style={{position:"absolute", top:"225px", right:"75px"}} />
+        }
+      </div>
         </div>  
         {values.loading
       ?
