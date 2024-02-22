@@ -3,7 +3,7 @@ import { Grid,TextField,Button } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 import registrationimg from '../assets/registrationimg.png' 
 import Headingforreglog from '../components/Headingforreglog'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
 let initialvalues ={
@@ -32,6 +32,10 @@ const Registration = () => {
       })
       createUserWithEmailAndPassword(auth,email,password).then((user)=>{
             console.log(user)
+            sendEmailVerification(auth.currentUser)
+              .then(() => {
+                console.log("Email send")
+              });
             setValues({
               email:"",
               fullName:"",
