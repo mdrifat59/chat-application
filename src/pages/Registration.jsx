@@ -5,13 +5,15 @@ import registrationimg from '../assets/registrationimg.png'
 import Headingforreglog from '../components/Headingforreglog'
 import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
 import { useNavigate,Link } from 'react-router-dom';
+import { FaEye,FaRegEyeSlash } from "react-icons/fa";
 
 let initialvalues ={
   email:"",
  fullName:"",
  password:"",
  loading:false,
- error:""
+ error:"",
+ eye:false
 }
 
 const Registration = () => {
@@ -82,8 +84,17 @@ const Registration = () => {
       {values.error.includes("Name")&& <Alert severity="error">{values.error}</Alert>}
       </div>
       <div className='reginput'>
-      <TextField value={values.password} type='password' onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
+      <TextField style={{position:"relative"}} value={values.password} type={values.eye ? 'text' : 'password'} onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
       {values.error.includes("password")&& <Alert severity="error">{values.error}</Alert>}
+      <div onClick={()=>setValues({...values,eye:!values.eye})} className='eye'>
+        {values.eye
+          ?
+          <FaEye style={{position:"absolute", top:"265px", right:"75px"}}/>
+          :
+          <FaRegEyeSlash style={{position:"absolute", top:"265px", right:"75px"}} />
+        }
+      </div>
+      
       </div>
       {values.loading
       ?
