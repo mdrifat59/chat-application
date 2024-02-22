@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Grid,TextField,Button } from '@mui/material'
+import { Grid,TextField,Button,Alert } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 import registrationimg from '../assets/registrationimg.png' 
 import Headingforreglog from '../components/Headingforreglog'
 import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 
 let initialvalues ={
   email:"",
@@ -68,7 +68,7 @@ const Registration = () => {
       :
       <Button onClick={handleSubmit} className='regbutton' variant="contained">Sing up</Button> 
     }
-      
+        <Alert severity="info" style={{marginTop:"20px"}}>Already Have An Account? <strong><Link to="/login">Login</Link></strong></Alert>
     </div>
   </Grid>
   <Grid item xs={6}>
