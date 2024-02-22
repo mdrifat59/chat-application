@@ -4,7 +4,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import login from '../assets/login.jpg' 
 import google from '../assets/google.png' 
 import Headingforreglog from '../components/Headingforreglog'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; 
+import { getAuth, signInWithEmailAndPassword,signInWithPopup } from "firebase/auth"; 
+import { GoogleAuthProvider } from "firebase/auth";
 
 let initialvalues ={
   email:"", 
@@ -15,6 +16,7 @@ let initialvalues ={
 
 const Login = () => {
   const auth = getAuth();
+  const provider = new GoogleAuthProvider();
   let [values,setValues]=useState(initialvalues)
   let handleValues = (e)=>{
     setValues({
@@ -38,12 +40,17 @@ const Login = () => {
           console.log(user)
     })
   }
+  let handleGoogleLogin =()=>{
+    signInWithPopup(auth, provider).then((result) => {
+     console.log(result)
+    })
+  }
   return (
     <Grid container spacing={2}>
     <Grid item xs={6}>
       <div className='regcontainer'> 
         <Headingforreglog className="headingreglog" title="Login to your account!"/> 
-        <img className='google' src={google} />
+        <img onClick={handleGoogleLogin} className='google' src={google} />
         <div className='reginput'> 
         <TextField value={values.email} onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />
         </div> 
