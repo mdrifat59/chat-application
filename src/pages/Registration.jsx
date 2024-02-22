@@ -10,7 +10,8 @@ let initialvalues ={
   email:"",
  fullName:"",
  password:"",
- loading:false
+ loading:false,
+ error:""
 }
 
 const Registration = () => {
@@ -26,6 +27,27 @@ const Registration = () => {
   }
   let handleSubmit=()=>{
       let {email, fullName, password}=values
+      if(!email){
+        setValues({
+          ...values,
+           error: "Enter an Email"
+        }) 
+        return
+      }
+      if(!fullName){
+        setValues({
+          ...values,
+           error: "Enter an Full Name"
+        }) 
+        return
+      }
+      if(!password){
+        setValues({
+          ...values,
+           error: "Enter an password"
+        }) 
+        return
+      }
       setValues({
         ...values,
          loagding: true
@@ -52,13 +74,16 @@ const Registration = () => {
       <Headingforreglog className="headingreglog" title="Get started with easily register"/>
       <p>Free register and you can enjoy it</p>
       <div className='reginput'> 
-      <TextField value={values.email} onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />
+      <TextField value={values.email} onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />      
+      {values.error.includes("Email")&& <Alert severity="error">{values.error}</Alert>}
       </div>
       <div className='reginput'>
       <TextField value={values.fullName} onChange={handleValues} name='fullName' id="outlined-basic" label="Full Name" variant="outlined" />
+      {values.error.includes("Name")&& <Alert severity="error">{values.error}</Alert>}
       </div>
       <div className='reginput'>
       <TextField value={values.password} type='password' onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
+      {values.error.includes("password")&& <Alert severity="error">{values.error}</Alert>}
       </div>
       {values.loading
       ?
