@@ -6,6 +6,9 @@ import google from '../assets/google.png'
 import Headingforreglog from '../components/Headingforreglog'
 import { getAuth, signInWithEmailAndPassword,signInWithPopup } from "firebase/auth"; 
 import { GoogleAuthProvider } from "firebase/auth";
+import Alert from '@mui/material/Alert';
+import { Link } from "react-router-dom";
+
 
 let initialvalues ={
   email:"", 
@@ -56,7 +59,7 @@ const Login = () => {
         </div> 
         <div className='reginput'>
         <TextField type='password' value={values.password} onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
-        </div> 
+        </div>  
         {values.loading
       ?
       <LoadingButton loading variant="outlined">
@@ -65,6 +68,7 @@ const Login = () => {
       :
       <Button onClick={handleSubmit} className='regbutton' variant="contained">Login to Continue</Button> 
     } 
+      <Alert severity="info" style={{marginTop:"20px"}}>Don't Have An Account? <strong><Link to="/">Sing up</Link></strong></Alert>
       </div>
     </Grid>
     <Grid item xs={6}>
