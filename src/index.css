@@ -43,3 +43,21 @@
     cursor: pointer;
 }
 /* ========= login page end ============= */ 
+/* ============ forgotpassword start============ */
+.forgotPassword{
+    background: #5F35F5;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .forgotPassword .forgotbox{
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+  }
+  .forgotPassword .MuiFormControl-root{
+    width: 100%;
+    margin: 10px 0;
+  }
+  /* ============ forgotpassword end ============ */

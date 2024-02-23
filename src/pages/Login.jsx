@@ -79,7 +79,7 @@ const Login = () => {
       <Button onClick={handleSubmit} className='regbutton' variant="contained">Login to Continue</Button> 
     } 
       <Alert severity="info" style={{marginTop:"20px"}}>Don't Have An Account? <strong><Link to="/">Sing up</Link></strong></Alert>
-      <Alert severity="info" style={{marginTop:"20px"}}>Don't Have An Account? <strong><Link to="/forgotpassword">Sing up</Link></strong></Alert>
+      <Alert severity="warning" style={{marginTop:"20px"}}>Forgot Password <strong><Link to="/forgotpassword">Click Here</Link></strong></Alert>
       </div>
     </Grid>
     <Grid item xs={6}>
