@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { Grid,TextField,Button } from '@mui/material'
+import { Grid,TextField,Button,Alert } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 import login from '../assets/login.jpg' 
 import google from '../assets/google.png' 
 import Headingforreglog from '../components/Headingforreglog'
 import { getAuth, signInWithEmailAndPassword,signInWithPopup } from "firebase/auth"; 
-import { GoogleAuthProvider } from "firebase/auth";
-import Alert from '@mui/material/Alert';
+import { GoogleAuthProvider } from "firebase/auth"; 
 import { Link } from "react-router-dom";
 import { FaEye,FaRegEyeSlash } from "react-icons/fa";
 
@@ -22,7 +21,7 @@ let initialvalues ={
 const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
-  let [values,setValues]=useState(initialvalues)
+  let [values,setValues]=useState(initialvalues) 
   let handleValues = (e)=>{
     setValues({
       ...values,
@@ -30,7 +29,7 @@ const Login = () => {
     })
   }
   let handleSubmit=()=>{
-    let {email, fullName, password}=values
+    let {email, password}=values
     setValues({
       ...values,
        loagding: true
@@ -57,10 +56,10 @@ const Login = () => {
         <Headingforreglog className="headingreglog" title="Login to your account!"/> 
         <img onClick={handleGoogleLogin} className='google' src={google} />
         <div className='reginput'> 
-        <TextField value={values.email} onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />
+        <TextField value={values.email} onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />  
         </div> 
         <div className='reginput'>
-        <TextField style={{position:"relative"}} value={values.password} type={values.eye ? 'text' : 'password'} onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />
+        <TextField style={{position:"relative"}} value={values.password} type={values.eye ? 'text' : 'password'} onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />         
         <div onClick={()=>setValues({...values,eye:!values.eye})} className='eye'>
         {values.eye
           ?
