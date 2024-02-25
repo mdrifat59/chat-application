@@ -6,7 +6,7 @@ import google from '../assets/google.png'
 import Headingforreglog from '../components/Headingforreglog'
 import { getAuth, signInWithEmailAndPassword,signInWithPopup } from "firebase/auth"; 
 import { GoogleAuthProvider } from "firebase/auth"; 
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { FaEye,FaRegEyeSlash } from "react-icons/fa";
 
 
@@ -22,6 +22,7 @@ const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
   let [values,setValues]=useState(initialvalues) 
+  let navigate = useNavigate()
   let handleValues = (e)=>{
     setValues({
       ...values,
@@ -41,6 +42,7 @@ const Login = () => {
             password:"",
              loagding: false
           }) 
+          navigate("/home")
           console.log(user)
     })
   }
