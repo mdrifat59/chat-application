@@ -22,6 +22,7 @@ const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
   let [values,setValues]=useState(initialvalues) 
+  let [error, setError]=useState("")
   let navigate = useNavigate()
   let handleValues = (e)=>{
     setValues({
@@ -48,6 +49,7 @@ const Login = () => {
       const errorCode=error.code;
       const errorMessage=error.message 
       console.log(errorCode) 
+      setError(errorCode)
       setValues({
         ...values,
         password:"",
@@ -69,6 +71,7 @@ const Login = () => {
         <div className='reginput'> 
         <TextField value={values.email} onChange={handleValues} name='email' id="outlined-basic" label="Email Address" variant="outlined" />  
         </div> 
+         {error && <Alert severity="error"> {error}</Alert>}  
         <div className='reginput'>
         <TextField style={{position:"relative"}} value={values.password} type={values.eye ? 'text' : 'password'} onChange={handleValues} name='password' id="outlined-basic" label="Password" variant="outlined" />         
         <div onClick={()=>setValues({...values,eye:!values.eye})} className='eye'>
@@ -80,6 +83,7 @@ const Login = () => {
         }
       </div>
         </div>  
+        {error && <Alert severity="error">{error}</Alert> }
         {values.loading
       ?
       <LoadingButton loading variant="outlined">
