@@ -49,7 +49,7 @@ const Login = () => {
           if(!user.user.emailVerified){
              notify("please varify Email for Login")
           }else{ 
-            navigate("/home")
+            navigate("/chat-app/home")
           }
           console.log(user)
     }).catch((error) => {
