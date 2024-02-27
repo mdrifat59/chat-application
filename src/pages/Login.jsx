@@ -8,6 +8,7 @@ import { getAuth, signInWithEmailAndPassword,signInWithPopup } from "firebase/au
 import { GoogleAuthProvider } from "firebase/auth"; 
 import { Link,useNavigate } from "react-router-dom";
 import { FaEye,FaRegEyeSlash } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 
 let initialvalues ={
@@ -21,6 +22,7 @@ let initialvalues ={
 const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+  const notify = (msg) => toast(msg);
   let [values,setValues]=useState(initialvalues) 
   let [error, setError]=useState("")
   let navigate = useNavigate()
@@ -31,6 +33,7 @@ const Login = () => {
     })
   }
   let handleSubmit=()=>{
+    notify()
     let {email, password}=values
     setValues({
       ...values,
@@ -43,19 +46,23 @@ const Login = () => {
             password:"",
              loagding: false
           }) 
-          navigate("/home")
+          if(!user.user.emailVerified){
+             notify("please varify Email for Login")
+          }else{ 
+            navigate("/home")
+          }
           console.log(user)
-    }).catch((error)=>{
-      const errorCode=error.code;
-      const errorMessage=error.message 
-      console.log(errorCode) 
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode)
       setError(errorCode)
       setValues({
         ...values,
         password:"",
          loagding: false
       }) 
-    }) 
+  }); 
   }
   let handleGoogleLogin =()=>{
     signInWithPopup(auth, provider).then((result) => {
@@ -90,7 +97,10 @@ const Login = () => {
         Submit
       </LoadingButton>
       :
+      <>
       <Button onClick={handleSubmit} className='regbutton' variant="contained">Login to Continue</Button> 
+      {/* <Button onClick={notify} className='regbutton' variant="contained">notify</Button>  */}
+      </>
     } 
       <Alert severity="info" style={{marginTop:"20px"}}>Don't Have An Account? <strong><Link to="/">Sing up</Link></strong></Alert>
       <Alert severity="warning" style={{marginTop:"20px"}}>Forgot Password <strong><Link to="/forgotpassword">Click Here</Link></strong></Alert>

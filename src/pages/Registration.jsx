@@ -43,6 +43,9 @@ const Registration = () => {
         }) 
         return
       }
+      // var  pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+      // console.log(!password || pattern.test(password))
+      // if(!password || !pattern.test(text)){
       if(!password){
         setValues({
           ...values,
