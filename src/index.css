@@ -2,6 +2,9 @@
     margin: 0;
     padding: 0;
 }
+ul,ol{
+    list-style: none;
+}
 /* ========= registration page start =========== */
 .regiimg{
     width: 100%;
@@ -73,10 +76,19 @@
     height: 100vh;
     background: #5F35F5;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   .navcontainer img{
     width: 70px;
     height: 70px;
     border-radius: 50%;
   }
+  .navcontainer .icon{
+    color: #fff;
+    font-size: 25px;
+    margin: 30px 0;
+  } 
   /* ============ Navbar end ============ */
