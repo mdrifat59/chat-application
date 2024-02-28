@@ -19,7 +19,7 @@ const router = createBrowserRouter(
       <Route  path="/" element={<Registration />}>  </Route>
       <Route  path="/login" element={<Login />}>  </Route>
       <Route  path="/forgotpassword" element={<ForgotPassword />}>  </Route>
-      <Route  path="/chat-app" element={<RootLayout />}> 
+      <Route  path="/chat" element={<RootLayout />}> 
         <Route  path="home" element={<Home />}>  </Route>
         <Route  path="message" element={<Message />}>  </Route>
        </Route>

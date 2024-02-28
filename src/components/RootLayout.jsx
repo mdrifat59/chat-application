@@ -1,9 +1,9 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import profile from '../assets/profile.png'   
 import { AiOutlineMessage } from "react-icons/ai";
-import { IoIosNotificationsOutline,IoMdSettings,IoIosLogOut,IoIosHome    } from "react-icons/io";
+import { IoIosNotificationsOutline,IoMdSettings,IoIosLogOut,IoIosHome    } from "react-icons/io"; 
 
 
 const RootLayout = () => {
@@ -15,8 +15,16 @@ const RootLayout = () => {
               <div className="navcontainer">
                 <img src={profile} />
                 <ul>
-                  <li><IoIosHome  className='icon' /></li>       
-                  <li><AiOutlineMessage className='icon' /></li>       
+                  <li>
+                     <Link to="/chat/home">
+                        <IoIosHome  className='icon' />
+                     </Link>
+                    </li>       
+                  <li>
+                  <Link to="/chat/message">
+                        <AiOutlineMessage  className='icon' />
+                     </Link>
+                    </li>       
                   <li><IoIosNotificationsOutline className='icon' /></li>       
                   <li><IoMdSettings className='icon' /></li>     
                   <li><IoIosLogOut className='icon' /></li>     
