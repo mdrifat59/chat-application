@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link,useLocation  } from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import profile from '../assets/profile.png'   
 import { AiOutlineMessage } from "react-icons/ai";
@@ -7,6 +7,8 @@ import { IoIosNotificationsOutline,IoMdSettings,IoIosLogOut,IoIosHome    } from 
 
 
 const RootLayout = () => {
+  const location = useLocation();
+  console.log(location.pathname)
   return (
     <>
          <Grid container spacing={2}>
@@ -16,13 +18,13 @@ const RootLayout = () => {
                 <img src={profile} />
                 <ul>
                   <li>
-                     <Link to="/chat/home">
-                        <IoIosHome  className='icon' />
+                     <Link to="/chat/home" className={location.pathname ==  "/chat/home" ? 'active' : 'icon'}>
+                        <IoIosHome />
                      </Link>
                     </li>       
                   <li>
-                  <Link to="/chat/message">
-                        <AiOutlineMessage  className='icon' />
+                  <Link to="/chat/message" className={location.pathname == "/chat/message" ? 'active': 'icon'}>
+                        <AiOutlineMessage />
                      </Link>
                     </li>       
                   <li><IoIosNotificationsOutline className='icon' /></li>       

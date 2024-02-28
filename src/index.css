@@ -87,7 +87,14 @@ ul,ol{
     border-radius: 50%;
   }
   .navcontainer .icon{
+    display: inline-block;
     color: #fff;
+    font-size: 25px;
+    margin: 30px 0;
+  }  
+  .active{
+    display: inline-block;
+    color: red;
     font-size: 25px;
     margin: 30px 0;
   } 
