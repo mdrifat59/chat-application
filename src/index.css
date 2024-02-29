@@ -164,4 +164,11 @@ ul,ol{
     width: 50px;
     height: 50px;
   }
+  .list h4{
+    font-size: 18px;  
+  }
+  .list p{
+    font-size: 12px;
+    color: #4D4D4D;
+  }
   /* ============ Group end ============ */
