@@ -4,6 +4,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Group from '../components/Group';
 import FriendRequest from '../components/FriendRequest';
+import Friends from '../components/Friends';
 
 const Home = () => {
     const auth = getAuth();
@@ -24,7 +25,7 @@ const Home = () => {
      <FriendRequest/>
   </Grid>
   <Grid item xs={4}>
-    <h1>xs=4</h1>
+     <Friends/>
   </Grid>
   <Grid item xs={4}>
     <h1>xs=4</h1>
