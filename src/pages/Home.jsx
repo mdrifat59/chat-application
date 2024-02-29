@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Group from '../components/Group';
 import FriendRequest from '../components/FriendRequest';
 import Friends from '../components/Friends';
+import MyGroups from '../components/MyGroups';
 
 const Home = () => {
     const auth = getAuth();
@@ -26,6 +27,7 @@ const Home = () => {
   </Grid>
   <Grid item xs={4}>
      <Friends/>
+     <MyGroups/>
   </Grid>
   <Grid item xs={4}>
     <h1>xs=4</h1>

@@ -1,10 +1,10 @@
 import React from 'react'
-import GroupImg from '../assets/group.png'  
+import GroupImg from '../assets/group.png' 
 
-const Friends = () => {
+const MyGroups = () => {
   return (
     <div className='box'> 
-    <h3>Friends </h3>
+    <h3>My Groups</h3>
     <div className="list">
         <div className="img">
             <img src={GroupImg} alt="" />
@@ -129,4 +129,4 @@ const Friends = () => {
   )
 }
 
-export default Friends
+export default MyGroups
