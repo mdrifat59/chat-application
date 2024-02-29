@@ -134,6 +134,7 @@ ul,ol{
     border-radius: 20px;
     position: relative;
     overflow-y: scroll;
+    margin-bottom: 20px;
     -webkit-box-shadow: 0px 0px 28px -6px rgba(0,0,0,0.33);
     -moz-box-shadow: 0px 0px 28px -6px rgba(0,0,0,0.33);
     box-shadow: 0px 0px 28px -6px rgba(0,0,0,0.33);
