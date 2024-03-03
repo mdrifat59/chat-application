@@ -3,7 +3,8 @@ import { Grid,TextField,Button,Alert } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 import registrationimg from '../assets/registrationimg.png' 
 import Headingforreglog from '../components/Headingforreglog'
-import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,sendEmailVerification,updateProfile } from "firebase/auth";
+import { getDatabase, ref, set, push } from "firebase/database";
 import { useNavigate,Link } from 'react-router-dom';
 import { FaEye,FaRegEyeSlash } from "react-icons/fa";
 
@@ -18,6 +19,7 @@ let initialvalues ={
 
 const Registration = () => {
     let navigate = useNavigate();
+    const db = getDatabase();
   const auth = getAuth();
   let [values,setValues]=useState(initialvalues)
 
@@ -58,11 +60,25 @@ const Registration = () => {
          loagding: true
       })
       createUserWithEmailAndPassword(auth,email,password).then((user)=>{
+        updateProfile(auth.currentUser, {
+          displayName: values.fullName, photoURL: "https://i.ibb.co/SDTpk5P/avater.png"
+        }).then(() => {
+          sendEmailVerification(auth.currentUser)
+          .then(() => {
+            console.log("Email send")
             console.log(user)
-            sendEmailVerification(auth.currentUser)
-              .then(() => {
-                console.log("Email send")
+            set(push(ref(db, 'users/')), {
+              username: values.fullName,
+              email: values.email, 
+              profile_picture : user.user.photoURL
+            }); 
+          
               });
+            }).catch((error) => {
+              // An error occurred
+              // ...
+            });
+         
             setValues({
               email:"",
               fullName:"",
