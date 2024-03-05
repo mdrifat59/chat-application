@@ -23,14 +23,13 @@ const UserList = () => {
         console.log(userList)
     }, [ ])
 
-    let handleFriendRequest =(item)=>{
-            console.log("k pathaise ", auth.currentUser.uid)
-            console.log("kake pathaise ", item.id)
-            // set(ref(db, 'users/' + userId), {
-            //     username: name,
-            //     email: email,
-            //     profile_picture : imageUrl
-            //   });
+    let handleFriendRequest =(item)=>{ 
+            set(ref(db, 'friendrequest/'), {
+                whosendid: auth.currentUser.uid, 
+                whosendname: auth.currentUser.displayName, 
+                whoreceiveid: item.id, 
+                whoreceivename: item.username, 
+              });
     }
 
     return (
