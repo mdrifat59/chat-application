@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
 import { Button } from '@mui/material';
-import { getDatabase, ref, onValue, set  } from "firebase/database";
+import { getDatabase, ref, onValue, set, push  } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 
@@ -24,7 +24,7 @@ const UserList = () => {
     }, [ ])
 
     let handleFriendRequest =(item)=>{ 
-            set(ref(db, 'friendrequest/'), {
+            set(push(ref(db, 'friendrequest/')), {
                 whosendid: auth.currentUser.uid, 
                 whosendname: auth.currentUser.displayName, 
                 whoreceiveid: item.id, 
