@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
 import { Button } from '@mui/material';
-import { getDatabase, ref, onValue, set, push  } from "firebase/database";
+import { getDatabase, ref, onValue, set, push, remove  } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 
@@ -9,7 +9,21 @@ const UserList = () => {
     const auth = getAuth();
     const db = getDatabase();
     let [userList, setUserList]=useState([])
+    let [friendRequest, setFriendRequest]=useState([])
     console.log(auth.currentUser)
+    useEffect(() => {
+        const  usersRef = ref(db, 'friendrequest/' );
+        onValue(usersRef, (snapshot) => {
+            let arr=[]
+            // const data = snapshot.val();
+            snapshot.forEach(item=>{
+                 arr.push(item.val().whoreceiveid+item.val().whosendid)
+            }) 
+            setFriendRequest(arr)
+        });
+        // console.log(userList)
+    }, [ ])
+
     useEffect(() => {
         const  usersRef = ref(db, 'users/' );
         onValue(usersRef, (snapshot) => {
@@ -20,7 +34,7 @@ const UserList = () => {
             }) 
             setUserList(arr)
         });
-        console.log(userList)
+        // console.log(userList)
     }, [ ])
 
     let handleFriendRequest =(item)=>{ 
@@ -30,6 +44,21 @@ const UserList = () => {
                 whoreceiveid: item.id, 
                 whoreceivename: item.username, 
               });
+    }
+    let handleCencel =(item)=>{
+        console.log(item.id)
+        let cencel = "";
+        onValue(ref(db, "friendrequest/"), (snapshot) => {
+            snapshot.forEach((item) => {
+                if (
+                    item.val().whosendid == auth.currentUser.uid &&
+                    item.id == item.val().whoreceiveid
+                ) {
+                    cencel = item.key;
+                }
+            });
+        });
+        remove(ref(db, 'friendrequest/'+ cencel))
     }
 
     return (
@@ -46,7 +75,13 @@ const UserList = () => {
                     <p>{item.email}</p>
                 </div>
                 <div className="button">
+                    {friendRequest.includes(item.id+auth.currentUser.uid)
+                    ? 
+                    <Button onClick={()=>handleCencel(item)} size="small" variant="contained"> Cencel </Button>
+                    :
                     <Button onClick={()=>handleFriendRequest(item)} size="small" variant="contained"> Add </Button>
+
+                    }
                 </div>
             </div> 
             ))}
