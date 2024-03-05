@@ -67,7 +67,7 @@ const Registration = () => {
           .then(() => {
             console.log("Email send")
             console.log(user)
-            set(push(ref(db, 'users/')), {
+            set(ref(db, 'users/'+ user.user.uid), {
               username: values.fullName,
               email: values.email, 
               profile_picture : user.user.photoURL
