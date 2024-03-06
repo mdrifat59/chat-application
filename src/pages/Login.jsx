@@ -9,6 +9,8 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { Link,useNavigate } from "react-router-dom";
 import { FaEye,FaRegEyeSlash } from "react-icons/fa";
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux'
+import { userdata } from '../features/user/userSlice';
 
 
 let initialvalues ={
@@ -26,6 +28,7 @@ const Login = () => {
   let [values,setValues]=useState(initialvalues) 
   let [error, setError]=useState("")
   let navigate = useNavigate()
+  let dispatch=useDispatch()
   let handleValues = (e)=>{
     setValues({
       ...values,
@@ -48,7 +51,8 @@ const Login = () => {
           }) 
           if(!user.user.emailVerified){
              notify("please varify Email for Login")
-          }else{ 
+          }else{
+            dispatch(userdata(user.user))
             navigate("/chat/home")
           }
           console.log(user)
