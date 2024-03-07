@@ -1,5 +1,5 @@
 import { Button,Grid } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Group from '../components/Group';
@@ -8,10 +8,19 @@ import Friends from '../components/Friends';
 import MyGroups from '../components/MyGroups';
 import UserList from '../components/UserList';
 import Block from '../components/Block';
+import { useSelector } from 'react-redux'
 
 const Home = () => {
     const auth = getAuth();
     let navigate =useNavigate()
+    let loginuser = useSelector((state)=>state.loggedUser.loginuser)
+
+   useEffect(()=>{
+    if(loginuser == null){
+      navigate("/login")
+    }
+   },[]) 
+   
     let handleLogOut =()=>{ 
         signOut(auth).then(() => {
             navigate("/login")

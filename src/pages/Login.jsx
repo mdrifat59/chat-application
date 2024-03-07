@@ -25,10 +25,10 @@ const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
   const notify = (msg) => toast(msg);
-  let [values,setValues]=useState(initialvalues) 
-  let [error, setError]=useState("")
+  let [values,setValues] = useState(initialvalues) 
+  let [error, setError] = useState("")
   let navigate = useNavigate()
-  let dispatch=useDispatch()
+  let dispatch = useDispatch()
   let handleValues = (e)=>{
     setValues({
       ...values,
