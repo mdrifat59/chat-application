@@ -1,6 +1,5 @@
-import { Button,Grid } from '@mui/material'
-import React, { useEffect } from 'react'
-import { getAuth, signOut } from "firebase/auth";
+import { Grid } from '@mui/material'
+import React, { useEffect } from 'react' 
 import { useNavigate } from "react-router-dom";
 import Group from '../components/Group';
 import FriendRequest from '../components/FriendRequest';
@@ -10,8 +9,7 @@ import UserList from '../components/UserList';
 import Block from '../components/Block';
 import { useSelector } from 'react-redux'
 
-const Home = () => {
-    const auth = getAuth();
+const Home = () => { 
     let navigate =useNavigate()
     let loginuser = useSelector((state)=>state.loggedUser.loginuser)
 
@@ -21,16 +19,9 @@ const Home = () => {
     }
    },[]) 
    
-    let handleLogOut =()=>{ 
-        signOut(auth).then(() => {
-            navigate("/login")
-          }).catch((error) => {
-            // An error happened.
-          });
-    }
+  
   return (
-    
-    //  <Button onClick={handleLogOut} variant='contained'>Log Out</Button> 
+     
     <Grid container spacing={2}>
   <Grid item xs={4}>
      <Group/>

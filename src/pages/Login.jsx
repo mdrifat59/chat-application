@@ -53,6 +53,7 @@ const Login = () => {
              notify("please varify Email for Login")
           }else{
             dispatch(userdata(user.user))
+            localStorage.setItem("user",JSON.stringify(user.user))
             navigate("/chat/home")
           }
           console.log(user)

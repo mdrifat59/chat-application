@@ -1,14 +1,22 @@
 import React from 'react'
-import { Outlet, Link,useLocation  } from 'react-router-dom'
+import { Outlet, Link,useLocation, useNavigate  } from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import profile from '../assets/profile.png'   
 import { AiOutlineMessage } from "react-icons/ai";
 import { IoIosNotificationsOutline,IoMdSettings,IoIosLogOut,IoIosHome    } from "react-icons/io"; 
+import { getAuth, signOut } from "firebase/auth";
 
 
 const RootLayout = () => {
-  const location = useLocation();
-  console.log(location.pathname)
+  const auth = getAuth();
+  const location = useLocation(); 
+  let navigate =useNavigate()
+  let handleLogOut =()=>{ 
+    signOut(auth).then(() => {
+      localStorage.removeItem("user")
+      navigate("/login")
+      }) 
+}
   return (
     <>
          <Grid container spacing={2}>
@@ -30,9 +38,9 @@ const RootLayout = () => {
                   <li><IoIosNotificationsOutline className='icon' /></li>       
                   <li><IoMdSettings className='icon' /></li>     
                   <li> 
-                  <Link to="/login" >
-                  <IoIosLogOut className='icon' />
-                     </Link>
+                   
+                  <IoIosLogOut onClick={handleLogOut} className='icon' />
+                      
                     </li>     
                 </ul>
               </div>
