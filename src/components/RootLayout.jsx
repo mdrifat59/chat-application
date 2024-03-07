@@ -29,7 +29,11 @@ const RootLayout = () => {
                     </li>       
                   <li><IoIosNotificationsOutline className='icon' /></li>       
                   <li><IoMdSettings className='icon' /></li>     
-                  <li><IoIosLogOut className='icon' /></li>     
+                  <li> 
+                  <Link to="/login" >
+                  <IoIosLogOut className='icon' />
+                     </Link>
+                    </li>     
                 </ul>
               </div>
             </div>
