@@ -5,12 +5,14 @@ import profile from '../assets/profile.png'
 import { AiOutlineMessage } from "react-icons/ai";
 import { IoIosNotificationsOutline,IoMdSettings,IoIosLogOut,IoIosHome    } from "react-icons/io"; 
 import { getAuth, signOut } from "firebase/auth";
+import { useSelector } from 'react-redux';
 
 
 const RootLayout = () => {
   const auth = getAuth();
   const location = useLocation(); 
   let navigate =useNavigate()
+  let userData= useSelector((state)=>state.loggedUser.loginuser)
   let handleLogOut =()=>{ 
     signOut(auth).then(() => {
       localStorage.removeItem("user")
@@ -24,6 +26,7 @@ const RootLayout = () => {
             <div className='navbar'>
               <div className="navcontainer">
                 <img src={profile} />
+                <h4 className='username'>{userData.displayName}</h4>
                 <ul>
                   <li>
                      <Link to="/chat/home" className={location.pathname ==  "/chat/home" ? 'active' : 'icon'}>

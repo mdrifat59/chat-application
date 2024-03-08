@@ -176,4 +176,8 @@ ul,ol{
     font-size: 12px;
     color: #000000;
   }
+  .username{
+    color: #fff;
+    margin-top: 10px;
+  }
   /* ============ Group end ============ */
