@@ -3,11 +3,13 @@ import GroupImg from '../assets/group.png'
 import { Button } from '@mui/material';
 import { getDatabase, ref, onValue, set, push, remove  } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import { useSelector } from 'react-redux';
 
 
 const UserList = () => {
     const auth = getAuth();
     const db = getDatabase();
+    let userData=useSelector((state)=>state.loggedUser.loginuser)
     let [userList, setUserList]=useState([])
     let [friendRequest, setFriendRequest]=useState([])
     console.log(auth.currentUser)
@@ -16,8 +18,8 @@ const UserList = () => {
         onValue(usersRef, (snapshot) => {
             let arr=[]
             // const data = snapshot.val();
-            snapshot.forEach(item=>{
-                 arr.push(item.val().whoreceiveid+item.val().whosendid)
+            snapshot.forEach(item=>{               
+                arr.push(item.val().whoreceiveid+item.val().whosendid)
             }) 
             setFriendRequest(arr)
         });
@@ -30,7 +32,9 @@ const UserList = () => {
             let arr=[]
             // const data = snapshot.val();
             snapshot.forEach(item=>{
-                arr.push({...item.val(), id:item.key})
+                if(userData.uid != item.key){
+                    arr.push({...item.val(), id:item.key})
+                }
             }) 
             setUserList(arr)
         });
