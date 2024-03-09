@@ -1,131 +1,51 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
 import {Button} from '@mui/material';
+import { getDatabase, ref, onValue } from "firebase/database";
+import { useSelector } from 'react-redux';
 
 const FriendRequest = () => {
+    const db = getDatabase();
+    let userData=useSelector((state)=>state.loggedUser.loginuser)
+    let [reqList, setReqList]=useState([])
+    useEffect(()=>{
+        const friendRequestRef = ref(db, "friendrequest" );
+        onValue(friendRequestRef, (snapshot) => {
+            let arr =[]
+          snapshot.forEach(item=>{
+            if(item.val().whoreceiveid == userData.uid){
+                 
+
+                    arr.push(item.val())
+                
+                
+            }
+          })
+          setReqList(arr);
+        });
+    },[])
   return (
     <div className='box'> 
         <h3>Friend Request</h3>
+        {reqList.length == 0
+        ?
+         <p>No data</p>
+        : 
+        reqList.map(item=>(
         <div className="list">
             <div className="img">
                 <img src={GroupImg} alt="" />
             </div>
             <div className="details">
-                <h4>Friends Reunion</h4>
+                <h4>{item.value = 0 ? "no data":item.whosendname}</h4>
                 <p>Hi Guys, Wassup!</p>
             </div>
             <div className="button">
             <Button size="small" variant="contained">Accept</Button>
             </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
-        <div className="list">
-            <div className="img">
-                <img src={GroupImg} alt="" />
-            </div>
-            <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
-            </div>
-        </div>
+        </div> 
+        ))
+        }
     </div>
   )
 }
