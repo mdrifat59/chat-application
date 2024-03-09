@@ -43,6 +43,9 @@ const FriendRequest = () => {
             <div className="button">
             <Button size="small" variant="contained">Accept</Button>
             </div>
+            <div className="button">
+            <Button size="small" variant="contained" color="error">Reject</Button>
+            </div>
         </div> 
         ))
         }
