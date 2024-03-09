@@ -22,8 +22,7 @@ const UserList = () => {
                 arr.push(item.val().whoreceiveid+item.val().whosendid)
             }) 
             setFriendRequest(arr)
-        });
-        // console.log(userList)
+        }); 
     }, [ ])
 
     useEffect(() => {
@@ -37,8 +36,7 @@ const UserList = () => {
                 }
             }) 
             setUserList(arr)
-        });
-        // console.log(userList)
+        }); 
     }, [ ])
 
     let handleFriendRequest =(item)=>{ 
@@ -49,8 +47,7 @@ const UserList = () => {
                 whoreceivename: item.username, 
               });
     }
-    let handleCencel =(item)=>{
-        console.log(item.id)
+    let handleCencel =(item)=>{ 
         let cencel = "";
         onValue(ref(db, "friendrequest/"), (snapshot) => {
             snapshot.forEach((item) => {
@@ -83,6 +80,11 @@ const UserList = () => {
                     ? 
                     <Button onClick={()=>handleCencel(item)} size="small" variant="contained"> Cencel </Button>
                     :
+                    friendRequest.includes(auth.currentUser.uid+item.id) 
+                    ?
+
+                    <Button  size="small" variant="contained"> Pending </Button>
+                    : 
                     <Button onClick={()=>handleFriendRequest(item)} size="small" variant="contained"> Add </Button>
 
                     }
