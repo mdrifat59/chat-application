@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
 import {Button} from '@mui/material';
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { useSelector } from 'react-redux';
 
 const FriendRequest = () => {
@@ -13,17 +13,17 @@ const FriendRequest = () => {
         onValue(friendRequestRef, (snapshot) => {
             let arr =[]
           snapshot.forEach(item=>{
-            if(item.val().whoreceiveid == userData.uid){
-                 
-
-                    arr.push(item.val())
-                
-                
+            if(item.val().whoreceiveid == userData.uid){ 
+                    arr.push({...item.val(), id:item.key}) 
             }
           })
           setReqList(arr);
         });
     },[])
+    let handleDelete = (id)=>{
+        console.log(id)
+        remove(ref(db, 'friendrequest/'+ id))
+    }
   return (
     <div className='box'> 
         <h3>Friend Request</h3>
@@ -44,7 +44,7 @@ const FriendRequest = () => {
             <Button size="small" variant="contained">Accept</Button>
             </div>
             <div className="button">
-            <Button size="small" variant="contained" color="error">Reject</Button>
+            <Button onClick={()=>handleDelete(item.id)} size="small" variant="contained" color="error">Reject</Button>
             </div>
         </div> 
         ))
