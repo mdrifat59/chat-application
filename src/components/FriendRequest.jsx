@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
 import {Button} from '@mui/material';
-import { getDatabase, ref, onValue, remove } from "firebase/database";
+import { getDatabase, ref, onValue, remove, set, push } from "firebase/database";
 import { useSelector } from 'react-redux';
 
 const FriendRequest = () => {
@@ -20,16 +20,22 @@ const FriendRequest = () => {
           setReqList(arr);
         });
     },[])
-    let handleDelete = (id)=>{
-        console.log(id)
+    let handleDelete = (id)=>{ 
         remove(ref(db, 'friendrequest/'+ id))
+    }
+    let handleAccept = (item)=>{
+      set(push(ref(db, 'friends/')), {
+         ...item,
+      }).then(()=>{
+        remove(ref(db, 'friendrequest/'+ item.id))
+      })
     }
   return (
     <div className='box'> 
         <h3>Friend Request</h3>
         {reqList.length == 0
         ?
-         <p>No data</p>
+         <h2>No Data</h2>
         : 
         reqList.map(item=>(
         <div className="list">
@@ -41,7 +47,7 @@ const FriendRequest = () => {
                 <p>Hi Guys, Wassup!</p>
             </div>
             <div className="button">
-            <Button size="small" variant="contained">Accept</Button>
+            <Button onClick={()=>handleAccept(item)} size="small" variant="contained">Accept</Button>
             </div>
             <div className="button">
             <Button onClick={()=>handleDelete(item.id)} size="small" variant="contained" color="error">Reject</Button>
