@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
-import { getDatabase, ref, onValue, remove } from "firebase/database";
+import { getDatabase, ref, onValue, remove, push,set } from "firebase/database";
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 
@@ -24,6 +24,28 @@ const Friends = () => {
     let handleUnFriend =(item)=>{
         remove(ref(db, 'friends/'+ item.id))
     }
+    let handleBlock =(item)=>{
+        if(userData.uid == item.whosendid){
+            set(push(ref(db, 'blocks/')), {
+                 blockedname: item.whoreceivename,
+                 blockid:item.whoreceiveid,
+                 blockbyid:item.whosendid,
+                 blockbyname:item.whosendname
+              })
+              .then(()=>{
+                remove(ref(db, 'friends/'+ item.id))
+              })
+        }else{
+            set(push(ref(db, 'blocks/')), {
+                blockedname:item.whosendname ,
+                blockid:item.whosendid,
+                blockbyid: item.whoreceiveid,
+                blockbyname: item.whoreceivename
+             }).then(()=>{
+                remove(ref(db, 'friends/'+ item.id))
+             }) 
+        }
+    }
     return (
         <div className='box'>
             <h3>Friends </h3>
@@ -31,7 +53,6 @@ const Friends = () => {
             ?
         <h2>No Friends</h2>
         :
-
             friends.map(item => (
                 <div className="list">
                     <div className="img">
@@ -50,7 +71,7 @@ const Friends = () => {
                         <p>Today, 8:56pm</p>
                     </div> */}
                     <div className="button">
-                        <Button size="small" variant="contained" color="error">Block</Button>
+                        <Button onClick={()=>handleBlock(item)} size="small" variant="contained" color="error">Block</Button>
                     </div>
                     <div className="button">
                         <Button onClick={() => handleUnFriend(item)} size="small" variant="contained" >Cencel</Button>
