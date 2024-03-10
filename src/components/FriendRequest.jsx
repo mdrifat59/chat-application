@@ -35,7 +35,7 @@ const FriendRequest = () => {
         <h3>Friend Request</h3>
         {reqList.length == 0
         ?
-         <h2>No Data</h2>
+         <h2>No Friends Request</h2>
         : 
         reqList.map(item=>(
         <div className="list">
