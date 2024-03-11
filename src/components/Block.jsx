@@ -41,9 +41,12 @@ const Block = () => {
         }
             <p>Hi Guys, Wassup!</p>
         </div>
+        {item.blockbyid == userData.uid        
+        &&        
         <div className="button">
         <Button size="small" variant="contained"> unblock</Button>
         </div>
+        }
     </div>
     ))
     }
