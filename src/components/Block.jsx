@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
 import {Button} from '@mui/material';
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { useSelector } from 'react-redux';
 
 const Block = () => {
@@ -20,6 +20,9 @@ const Block = () => {
                  
 });
     })
+    let handleUnblock =(item)=>{
+        remove(ref(db, 'blocks/'+ item.id))
+    }
   return (
     <div className='box'> 
     <h3>Blocked Users</h3>
@@ -44,7 +47,7 @@ const Block = () => {
         {item.blockbyid == userData.uid        
         &&        
         <div className="button">
-        <Button size="small" variant="contained"> unblock</Button>
+        <Button onClick={()=>handleUnblock(item)} size="small" variant="contained"> unblock</Button>
         </div>
         }
     </div>
