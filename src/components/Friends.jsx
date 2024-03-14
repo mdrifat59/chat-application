@@ -38,7 +38,7 @@ const Friends = () => {
         }else{
             set(push(ref(db, 'blocks/')), {
                 blockedname:item.whosendname ,
-                blockid:item.whosendid,
+                blockedid:item.whosendid,
                 blockbyid: item.whoreceiveid,
                 blockbyname: item.whoreceivename
              }).then(()=>{

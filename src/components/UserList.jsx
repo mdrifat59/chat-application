@@ -13,11 +13,12 @@ const UserList = () => {
     let [userList, setUserList]=useState([])
     let [friendRequest, setFriendRequest]=useState([])
     let [friends, setFriends]=useState([]) 
+    let [block, setBlock]=useState([]) 
+    // get data from Database
     useEffect(() => {
         const  usersRef = ref(db, 'friendrequest/' );
         onValue(usersRef, (snapshot) => {
-            let arr=[]
-            // const data = snapshot.val();
+            let arr=[] 
             snapshot.forEach(item=>{               
                 arr.push(item.val().whoreceiveid+item.val().whosendid)
             }) 
@@ -25,10 +26,19 @@ const UserList = () => {
         }); 
     }, [ ])
     useEffect(() => {
+        const  blockRef = ref(db, 'blocks/' );
+        onValue(blockRef, (snapshot) => {
+            let arr=[] 
+            snapshot.forEach(item=>{               
+                arr.push(item.val().blockedid + item.val().blockbyid)
+            }) 
+            setBlock(arr)
+        }); 
+    }, [ ])
+    useEffect(() => {
         const  usersRef = ref(db, 'friends/' );
         onValue(usersRef, (snapshot) => {
-            let arr=[]
-            // const data = snapshot.val();
+            let arr=[] 
             snapshot.forEach(item=>{               
                 arr.push(item.val().whoreceiveid+item.val().whosendid)
             }) 
@@ -39,8 +49,7 @@ const UserList = () => {
     useEffect(() => {
         const  usersRef = ref(db, 'users/' );
         onValue(usersRef, (snapshot) => {
-            let arr=[]
-            // const data = snapshot.val();
+            let arr=[] 
             snapshot.forEach(item=>{
                 if(userData.uid != item.key){
                     arr.push({...item.val(), id:item.key})
@@ -93,12 +102,17 @@ const UserList = () => {
                     :
                     friendRequest.includes(auth.currentUser.uid+item.id) 
                     ?
-
                     <Button  size="small" variant="contained"> Pending </Button>
                     : 
-                    friends.includes(auth.currentUser.uid+item.id) || friends.includes(item.id + auth.currentUser.uid) 
+                    friends.includes(auth.currentUser.uid+item.id) ||
+                     friends.includes(item.id + auth.currentUser.uid) 
                     ?
                     <Button  size="small" variant="contained" color='success'> Friends </Button>                    
+                    :
+                    block.includes(userData.uid + item.id) ||
+                     block.includes(item.id + userData.uid) 
+                    ?
+                    <Button  size="small" variant="contained" color='error'> Block </Button>                    
                     :
                     <Button onClick={()=>handleFriendRequest(item)} size="small" variant="contained"> Add </Button>
 
