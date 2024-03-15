@@ -1,8 +1,8 @@
-import {React,useState} from 'react'
+import {React,useEffect,useState} from 'react'
 import GroupImg from '../assets/group.png'  
 import {Button, Typography, Modal, Box, TextField  } from '@mui/material'; 
 import { useSelector } from 'react-redux';
-import { getDatabase, ref, set, push } from "firebase/database";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -24,9 +24,22 @@ const Group = () => {
     const db = getDatabase();
     let userData = useSelector((state)=>state.loggedUser.loginuser)
     let [groupInfo, setGroupInfo]=useState(groupData)
+    let [groupList, setGroupList]=useState([])
     const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); 
+  useEffect(()=>{
+      const groupRef = ref(db, 'groups/');
+      let arr=[]
+        onValue(groupRef, (snapshot) => {
+         snapshot.forEach(item=>{
+            if(item.val().adminid !== userData.uid){
+                arr.push({...item.val(), id:item.key})
+            }
+         })
+                setGroupList(arr)
+    });
+  },[])
   let handleChange = (e)=>{
 
     setGroupInfo({
@@ -67,18 +80,21 @@ const Group = () => {
         </Box>
       </Modal>
         </h3>
+        {groupList.map(item=>(
+
         <div className="list">
             <div className="img">
                 <img src={GroupImg} alt="" />
             </div>
             <div className="details">
-                <h4>Friends Reunion</h4>
-                <p>Hi Guys, Wassup!</p>
+                <h4>{item.groupname}</h4>
+                <p>{item.grouptagline}</p>
             </div>
             <div className="button">
             <Button size="small" variant="contained">Join</Button>
             </div>
         </div>
+        ))}
          
     </div>
   )
