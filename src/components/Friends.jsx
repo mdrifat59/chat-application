@@ -19,8 +19,8 @@ const Friends = () => {
                 }
             })
             setFriends(arr);
-        }, []);
-    })
+        });
+    },[])
     let handleUnFriend =(item)=>{
         remove(ref(db, 'friends/'+ item.id))
     }

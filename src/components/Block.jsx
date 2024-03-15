@@ -19,7 +19,7 @@ const Block = () => {
                     setBlockList(arr)
                  
 });
-    })
+    },[])
     let handleUnblock =(item)=>{
         remove(ref(db, 'blocks/'+ item.id))
     }

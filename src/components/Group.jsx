@@ -1,6 +1,8 @@
 import {React,useState} from 'react'
 import GroupImg from '../assets/group.png'  
 import {Button, Typography, Modal, Box, TextField  } from '@mui/material'; 
+import { useSelector } from 'react-redux';
+import { getDatabase, ref, set, push } from "firebase/database";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -13,10 +15,35 @@ const style = {
     p: 4,
   };
 
+  let groupData ={
+    groupname:"",
+    grouptagline:""
+  }
+
 const Group = () => {
+    const db = getDatabase();
+    let userData = useSelector((state)=>state.loggedUser.loginuser)
+    let [groupInfo, setGroupInfo]=useState(groupData)
     const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setOpen(false); 
+  let handleChange = (e)=>{
+
+    setGroupInfo({
+        ...groupInfo,
+        [e.target.name]: e.target.value
+    })
+  }
+  let handleSubmit =()=>{
+    set(push(ref(db, 'groups/')), {
+        groupname: groupInfo.groupname,
+        grouptagline: groupInfo.grouptagline,
+        adminid: userData.uid,
+        adminname:userData.displayName
+      }).then(()=>{
+        setOpen(false)
+      }) 
+  }
   return (
     <div className='box'> 
         <h3 className='title'>Group List
@@ -32,8 +59,10 @@ const Group = () => {
             Creat your group
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          <TextField margin="dense"  id="outlined-basic" label="Group Name" variant="outlined" />
-          <TextField id="outlined-basic" margin="dense"  label="Group Tagline" variant="outlined" />
+                <TextField onChange={handleChange} name='groupname' margin="dense"  id="outlined-basic" label="Group Name" variant="outlined" />
+                <TextField onChange={handleChange} name='grouptagline' id="outlined-basic" margin="dense"  label="Group Tagline" variant="outlined" />
+          <br/>
+          <Button onClick={handleSubmit} variant="contained">Contained</Button>
           </Typography>
         </Box>
       </Modal>
