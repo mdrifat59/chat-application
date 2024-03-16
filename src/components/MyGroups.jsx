@@ -28,12 +28,13 @@ const MyGroups = () => {
             :
             
             group.map(item=>(
-
+                userData.uid == item.adminid &&
             <div className="list">
                 <div className="img">
                     <img src={GroupImg} alt="" />
                 </div>
                 <div className="details">
+                    <h5> Admin: {item.adminname}</h5>
                     <h4>{item.groupname}</h4>
                     <p>{item.grouptagline}</p>
                 </div>

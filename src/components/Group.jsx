@@ -33,9 +33,9 @@ const Group = () => {
       let arr=[]
         onValue(groupRef, (snapshot) => {
          snapshot.forEach(item=>{
-            if(item.val().adminid !== userData.uid){
+            
                 arr.push({...item.val(), id:item.key})
-            }
+            
          })
                 setGroupList(arr)
     });
@@ -60,7 +60,7 @@ const Group = () => {
   return (
     <div className='box'> 
         <h3 className='title'>Group List
-        <Button size="small" variant="contained"  onClick={handleOpen}>Join</Button>
+        <Button size="small" variant="contained"  onClick={handleOpen}>Create group</Button>
         <Modal
         open={open}
         onClose={handleClose}
@@ -81,7 +81,7 @@ const Group = () => {
       </Modal>
         </h3>
         {groupList.map(item=>(
-
+          userData.uid != item.adminid &&
         <div className="list">
             <div className="img">
                 <img src={GroupImg} alt="" />
