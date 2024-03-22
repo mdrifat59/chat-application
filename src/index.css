@@ -177,7 +177,10 @@ ul,ol{
     color: #000000;
   }
   .button{
-    margin-left: auto;
+    margin-left: auto; 
+  }
+  .button button{
+    font-size: 10px;
   }
   .username{
     color: #fff;

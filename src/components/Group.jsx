@@ -25,21 +25,11 @@ const Group = () => {
     let userData = useSelector((state)=>state.loggedUser.loginuser)
     let [groupInfo, setGroupInfo]=useState(groupData)
     let [groupList, setGroupList]=useState([])
+    // let [groupMemberList, setGroupMemberList]=useState([])
     const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); 
-  useEffect(()=>{
-      const groupRef = ref(db, 'groups/');
-      let arr=[]
-        onValue(groupRef, (snapshot) => {
-         snapshot.forEach(item=>{
-            
-                arr.push({...item.val(), id:item.key})
-            
-         })
-                setGroupList(arr)
-    });
-  },[])
+  
   let handleChange = (e)=>{
 
     setGroupInfo({
@@ -57,6 +47,38 @@ const Group = () => {
         setOpen(false)
       }) 
   }
+  // let handleGroupJoin = (item)=>{
+  //   set(push(ref(db, 'grouprequest/')), {
+  //     adminid:item.adminid,
+  //     adminname:item.adminname,
+  //     groupid:item.groupid,
+  //     groupname:item.groupname,
+  //     userid: userData.uid,
+  //     username:userData.displayName
+  //  }) 
+  // }
+  useEffect(()=>{
+    const groupRef = ref(db, 'groups/');
+    onValue(groupRef, (snapshot) => {
+        let arr=[]
+       snapshot.forEach(item=>{            
+              arr.push({...item.val(), groupId:item.key})            
+       })
+              setGroupList(arr)
+  });
+},[])
+//   useEffect(()=>{
+//     const groupRef = ref(db, 'grouprequest/');
+//     let arr=[]
+//       onValue(groupRef, (snapshot) => {
+//        snapshot.forEach(item=>{          
+//         if(item.val().userid == userData.uid){
+//           arr.push(item.val().groupid)            
+//         }  
+//        })
+//               setGroupMemberList(arr)
+//   });
+// },[ ])
   return (
     <div className='box'> 
         <h3 className='title'>Group List
@@ -75,13 +97,13 @@ const Group = () => {
                 <TextField onChange={handleChange} name='groupname' margin="dense"  id="outlined-basic" label="Group Name" variant="outlined" />
                 <TextField onChange={handleChange} name='grouptagline' id="outlined-basic" margin="dense"  label="Group Tagline" variant="outlined" />
           <br/>
-          <Button onClick={handleSubmit} variant="contained">Contained</Button>
+          <Button onClick={handleSubmit} variant="contained">Submit</Button>
           </Typography>
         </Box>
       </Modal>
         </h3>
-        {groupList.map(item=>(
-          userData.uid != item.adminid &&
+        {groupList.map(item =>(
+          // userData.uid !== item.adminid &&
         <div className="list">
             <div className="img">
                 <img src={GroupImg} alt="" />
@@ -90,9 +112,15 @@ const Group = () => {
                 <h4>{item.groupname}</h4>
                 <p>{item.grouptagline}</p>
             </div>
-            <div className="button">
-            <Button size="small" variant="contained">Join</Button>
-            </div>
+            {/* <div className="button">
+              {groupMemberList.indexOf(item.groupid) !== -1 
+              ?
+               <Button onClick={()=>handleGroupJoin(item)} size="small" variant="contained">Req send</Button> 
+              :
+              <Button onClick={()=>handleGroupJoin(item)} size="small" variant="contained">Join</Button>
+               } 
+
+            </div> */}
         </div>
         ))}
          
