@@ -13,9 +13,9 @@ const MyGroups = () => {
         onValue(groupRef, (snapshot) => {
             let arr = []
             snapshot.forEach(item => {
-                // if (item.val().adminid == userData.uid) {
+                if (item.val().adminid == userData.uid) {
                     arr.push({...item.val(), groupId:item.key})
-                // }
+                }
             })
             setMyGroup(arr)
             console.log(arr)
@@ -24,13 +24,13 @@ const MyGroups = () => {
     return (
         <div className='box'>
             <h3>My Groups</h3>
-            {/* {myGroup.length == 0
+            {myGroup.length == 0
             ?
                 <h2>your not group yet</h2>
-            : */}
+            :
 
-           { myGroup.map((item) => (
-                //    userData.uid == item.adminid &&            
+            myGroup.map((item) => (
+                   userData.uid == item.adminid &&            
                 <div className="list">
                     <div className="img">
                         <img src={GroupImg} alt="" />

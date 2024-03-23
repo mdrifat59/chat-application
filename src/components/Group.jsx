@@ -25,7 +25,7 @@ const Group = () => {
     let userData = useSelector((state)=>state.loggedUser.loginuser)
     let [groupInfo, setGroupInfo]=useState(groupData)
     let [groupList, setGroupList]=useState([])
-    // let [groupMemberList, setGroupMemberList]=useState([])
+    let [groupMemberList, setGroupMemberList]=useState([])
     const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); 
@@ -103,7 +103,7 @@ const Group = () => {
       </Modal>
         </h3>
         {groupList.map(item =>(
-          // userData.uid !== item.adminid &&
+          userData.uid !== item.adminid &&
         <div className="list">
             <div className="img">
                 <img src={GroupImg} alt="" />
@@ -112,7 +112,7 @@ const Group = () => {
                 <h4>{item.groupname}</h4>
                 <p>{item.grouptagline}</p>
             </div>
-            {/* <div className="button">
+            <div className="button">
               {groupMemberList.indexOf(item.groupid) !== -1 
               ?
                <Button onClick={()=>handleGroupJoin(item)} size="small" variant="contained">Req send</Button> 
@@ -120,7 +120,7 @@ const Group = () => {
               <Button onClick={()=>handleGroupJoin(item)} size="small" variant="contained">Join</Button>
                } 
 
-            </div> */}
+            </div>
         </div>
         ))}
          
