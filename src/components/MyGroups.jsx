@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box'; 
@@ -35,11 +35,9 @@ const MyGroups = () => {
       const groupRef = ref(db, 'grouprequests/');
       onValue(groupRef, (snapshot) => {
         let arr = []
-        snapshot.forEach(item => {
-                  console.log(item.val().groupid) 
-                  console.log(group.groupid) 
+        snapshot.forEach(item => {  
                     if ( userData.uid == item.val().adminid && item.val().groupid == group.groupid) {
-                        arr.push(item.val())
+                        arr.push({...item.val(), groupreqid:item.key})
                     }
                 })
                 setMyGroupReq(arr) 
@@ -61,6 +59,10 @@ const MyGroups = () => {
             setMyGroup(arr) 
         });
     }, []) 
+    let handleGroupRequestDelete = (item)=>{
+      remove(ref(db, 'grouprequests/'+ item.groupreqid))
+      setOpen(false)
+    }
     return (
         <div className='box'>
             <h3>My Groups</h3>
@@ -121,13 +123,14 @@ const MyGroups = () => {
                           > 
                           </Typography>
                           {" Wants to join your group"}
+                          <br/>
+                          <Button style={{marginRight:"20px"}}  size="small" variant="contained" color='success'>Accept</Button>
+                          <Button onClick={()=>handleGroupRequestDelete(item)}  size="small" variant="contained" color='error'>Delete</Button> 
                         </React.Fragment>
                       } 
                     /> 
 
                   </ListItem>
-                    <Button style={{marginBottom:"20px", marginLeft:"70px"}} size="small" variant="contained" color='success'>Accept</Button>
-                    <Button style={{marginBottom:"20px", marginLeft:"70px"}}  size="small" variant="contained" color='error'>Delete</Button> 
                   <Divider variant="inset" component="li" />
                 </>
           ))}
