@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import GroupImg from '../assets/group.png'
-import { getDatabase, ref, onValue, remove } from "firebase/database";
+import { getDatabase, ref, onValue, remove, push, set } from "firebase/database";
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box'; 
@@ -63,6 +63,14 @@ const MyGroups = () => {
       remove(ref(db, 'grouprequests/'+ item.groupreqid))
       setOpen(false)
     }
+    let handleAccept = (item)=>{
+      set(push(ref(db, 'members/')), {
+         ...item
+      }).then(()=>{
+        remove(ref(db, 'grouprequests/'+ item.groupreqid))
+        setOpen(false)
+      })
+    }
     return (
         <div className='box'>
             <h3>My Groups</h3>
@@ -124,7 +132,7 @@ const MyGroups = () => {
                           </Typography>
                           {" Wants to join your group"}
                           <br/>
-                          <Button style={{marginRight:"20px"}}  size="small" variant="contained" color='success'>Accept</Button>
+                          <Button onClick={()=>handleAccept(item)} style={{marginRight:"20px"}}  size="small" variant="contained" color='success'>Accept</Button>
                           <Button onClick={()=>handleGroupRequestDelete(item)}  size="small" variant="contained" color='error'>Delete</Button> 
                         </React.Fragment>
                       } 
