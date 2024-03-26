@@ -6,6 +6,12 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box'; 
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar'; 
 
 
 const style = {
@@ -23,8 +29,24 @@ const style = {
 const MyGroups = () => {
     const db = getDatabase();
     let [myGroup, setMyGroup] = useState([])
+    let [myGroupReq, setMyGroupReq] = useState([])
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = (group) =>{
+      const groupRef = ref(db, 'grouprequests/');
+      onValue(groupRef, (snapshot) => {
+        let arr = []
+        snapshot.forEach(item => {
+                  console.log(item.val().groupid) 
+                  console.log(group.groupid) 
+                    if ( userData.uid == item.val().adminid && item.val().groupid == group.groupid) {
+                        arr.push(item.val())
+                    }
+                })
+                setMyGroupReq(arr) 
+      });
+      setOpen(true);
+    } 
+      
     const handleClose = () => setOpen(false);
     let userData = useSelector((state) => state.loggedUser.loginuser)
     useEffect(() => {
@@ -33,13 +55,12 @@ const MyGroups = () => {
             let arr = []
             snapshot.forEach(item => {
                 if (item.val().adminid == userData.uid) {
-                    arr.push({...item.val(), groupId:item.key})
+                    arr.push({...item.val(), groupid:item.key})
                 }
             })
-            setMyGroup(arr)
-            console.log(arr)
+            setMyGroup(arr) 
         });
-    }, [])
+    }, []) 
     return (
         <div className='box'>
             <h3>My Groups</h3>
@@ -60,7 +81,7 @@ const MyGroups = () => {
                         <p>{item.grouptagline}</p> 
                     </div>
                     <div className="button">
-                        <Button onClick={handleOpen} size="small" variant="contained">Request</Button>
+                        <Button onClick={()=>handleOpen(item)} size="small" variant="contained">Request</Button>
                     </div>
                     <div className="button">
                         <Button size="small" variant="contained">Member</Button>
@@ -68,6 +89,7 @@ const MyGroups = () => {
                 </div>
             ))
             }
+
             {/* modal */}
             <Modal
         open={open}
@@ -77,10 +99,37 @@ const MyGroups = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+            Group Request List
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          {myGroupReq.map(item =>(
+                <>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={item.username}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          > 
+                          </Typography>
+                          {" Wants to join your group"}
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </>
+          ))}
+     
+    </List>
           </Typography>
         </Box>
       </Modal>
