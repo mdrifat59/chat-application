@@ -122,9 +122,12 @@ const MyGroups = () => {
                           </Typography>
                           {" Wants to join your group"}
                         </React.Fragment>
-                      }
-                    />
+                      } 
+                    /> 
+
                   </ListItem>
+                    <Button style={{marginBottom:"20px", marginLeft:"70px"}} size="small" variant="contained" color='success'>Accept</Button>
+                    <Button style={{marginBottom:"20px", marginLeft:"70px"}}  size="small" variant="contained" color='error'>Delete</Button> 
                   <Divider variant="inset" component="li" />
                 </>
           ))}
