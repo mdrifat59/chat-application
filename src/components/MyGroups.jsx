@@ -26,11 +26,26 @@ const style = {
     p: 4,
   };
 
+  const style2 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
 const MyGroups = () => {
     const db = getDatabase();
     let [myGroup, setMyGroup] = useState([])
     let [myGroupReq, setMyGroupReq] = useState([])
     const [open, setOpen] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
+    const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
     const handleOpen = (group) =>{
       const groupRef = ref(db, 'grouprequests/');
       onValue(groupRef, (snapshot) => {
@@ -94,13 +109,14 @@ const MyGroups = () => {
                         <Button onClick={()=>handleOpen(item)} size="small" variant="contained">Request</Button>
                     </div>
                     <div className="button">
-                        <Button size="small" variant="contained">Member</Button>
+                        <Button onClick={handleOpen2} size="small" variant="contained">Member</Button>
                     </div>
                 </div>
             ))
             }
 
-            {/* modal */}
+            {/* Group Request modal start */}
+           
             <Modal
         open={open}
         onClose={handleClose}
@@ -147,7 +163,24 @@ const MyGroups = () => {
           </Typography>
         </Box>
       </Modal>
-
+       {/* Group Request modal end */}
+       {/* Member show modal start */}
+       <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style2}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            This is me
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
+       {/* Member show modal end */}
         </div>
     )
 }
