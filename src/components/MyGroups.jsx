@@ -42,9 +42,24 @@ const MyGroups = () => {
     const db = getDatabase();
     let [myGroup, setMyGroup] = useState([])
     let [myGroupReq, setMyGroupReq] = useState([])
+    let [myMember, setMyMember] = useState([])
     const [open, setOpen] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
-    const handleOpen2 = () => setOpen2(true);
+
+    const handleOpen2 = (member) =>{
+      const groupRef = ref(db, 'members/');
+      onValue(groupRef, (snapshot) => {
+        let arr = []
+        snapshot.forEach(item => {  
+                    if ( userData.uid == item.val().adminid && item.val().groupid == member.groupid) {
+                        arr.push({...item.val(), memberid:item.key})
+                    }
+                })
+                setMyMember(arr) 
+      });
+      setOpen2(true);
+    } 
+      
   const handleClose2 = () => setOpen2(false);
     const handleOpen = (group) =>{
       const groupRef = ref(db, 'grouprequests/');
@@ -109,7 +124,7 @@ const MyGroups = () => {
                         <Button onClick={()=>handleOpen(item)} size="small" variant="contained">Request</Button>
                     </div>
                     <div className="button">
-                        <Button onClick={handleOpen2} size="small" variant="contained">Member</Button>
+                        <Button onClick={()=>handleOpen2(item)} size="small" variant="contained">Member</Button>
                     </div>
                 </div>
             ))
@@ -173,10 +188,37 @@ const MyGroups = () => {
       >
         <Box sx={style2}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            This is me
+            Group Members
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+             {myMember.map(item =>(
+                <>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={item.username}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          > 
+                          </Typography>
+                          {" Wants to join your group"}
+                          <br/>                          
+                          <Button    size="small" variant="contained" color='error'>Remove</Button> 
+                        </React.Fragment>
+                      } 
+                    /> 
+
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </>
+          ))}
           </Typography>
         </Box>
       </Modal>
