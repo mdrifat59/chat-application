@@ -26,6 +26,7 @@ const Group = () => {
     let [groupInfo, setGroupInfo]=useState(groupData)
     let [groupList, setGroupList]=useState([])
     let [groupMemberList, setGroupMemberList]=useState([])
+    let [memberList, setMemberList]=useState([])
     const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); 
@@ -79,6 +80,18 @@ const Group = () => {
               setGroupMemberList(arr)
   });
 },[ ])
+  useEffect(()=>{
+    const groupRef = ref(db, 'members/');
+    onValue(groupRef, (snapshot) => {
+        let arr=[]
+       snapshot.forEach(item=>{          
+        if(item.val().userid == userData.uid){
+          arr.push(item.val().groupid)            
+        }  
+       })
+              setMemberList(arr)
+  });
+},[ ])
   return (
     <div className='box'> 
         <h3 className='title'>Group List
@@ -115,9 +128,12 @@ const Group = () => {
             <div className="button">              
               {groupMemberList.indexOf(item.groupid) !== -1 
                ?
-                 <Button  size="small" variant="contained">Request send</Button>
-               
+                 <Button  size="small" variant="contained">Request send</Button>               
                :
+                 memberList.indexOf(item.groupid) !== -1
+                 ?
+                 <Button onClick={()=>handleGroupJoin(item)} size="small" variant="contained">Joined </Button>
+                 :
                  <Button onClick={()=>handleGroupJoin(item)} size="small" variant="contained">Join </Button>
                
                }                  
