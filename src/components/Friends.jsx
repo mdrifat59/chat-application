@@ -22,7 +22,7 @@ const Friends = () => {
         });
     },[])
     let handleUnFriend =(item)=>{
-        remove(ref(db, 'friends/'+ item.id))
+        remove(ref(db, 'friends/'+ item.id)) 
     }
     let handleBlock =(item)=>{
         if(userData.uid == item.whosendid){

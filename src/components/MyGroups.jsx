@@ -12,8 +12,7 @@ import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar'; 
-
-
+ 
 const style = {
     position: 'absolute',
     top: '50%',
@@ -38,6 +37,19 @@ const style = {
     p: 4,
   };
 
+  const style3 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+  
+
 const MyGroups = () => {
     const db = getDatabase();
     let [myGroup, setMyGroup] = useState([])
@@ -45,7 +57,12 @@ const MyGroups = () => {
     let [myMember, setMyMember] = useState([])
     const [open, setOpen] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
-
+    const [open3, setOpen3] = React.useState(false);
+    const handleClose3 = () => setOpen3(false);
+    const handleOpen3 = () => setOpen3(true);
+    const handleClose2 = () => setOpen2(false);
+    const handleClose = () => setOpen(false);
+    let userData = useSelector((state) => state.loggedUser.loginuser)
     const handleOpen2 = (member) =>{
       const groupRef = ref(db, 'members/');
       onValue(groupRef, (snapshot) => {
@@ -60,7 +77,7 @@ const MyGroups = () => {
       setOpen2(true);
     } 
       
-  const handleClose2 = () => setOpen2(false);
+  
     const handleOpen = (group) =>{
       const groupRef = ref(db, 'grouprequests/');
       onValue(groupRef, (snapshot) => {
@@ -74,9 +91,14 @@ const MyGroups = () => {
       });
       setOpen(true);
     } 
-      
-    const handleClose = () => setOpen(false);
-    let userData = useSelector((state) => state.loggedUser.loginuser)
+    
+    let handleYes = (rifat)=>{
+      // remove(ref(db, 'members/'+ item.memberid))
+      console.log(rifat.val().memberid)
+      setOpen3(false)
+    }
+    
+    
     useEffect(() => {
         const groupRef = ref(db, 'groups/');
         onValue(groupRef, (snapshot) => {
@@ -208,9 +230,9 @@ const MyGroups = () => {
                             color="text.primary"
                           > 
                           </Typography>
-                          {" Wants to join your group"}
+                          {"current member this group"}
                           <br/>                          
-                          <Button    size="small" variant="contained" color='error'>Remove</Button> 
+                          <Button onClick={handleOpen3} size="small" variant="contained" color='error'>Remove</Button> 
                         </React.Fragment>
                       } 
                     /> 
@@ -223,6 +245,27 @@ const MyGroups = () => {
         </Box>
       </Modal>
        {/* Member show modal end */}
+
+       {/* Member Remove button modal start */}
+       <Modal
+        open={open3}
+        onClose={handleClose3}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style3}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+           Are you sure, Remove this friend?
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Button onClick={handleClose3} style={{marginRight:"50px"}} size="small" variant="contained">No</Button> 
+          <Button onClick={() => handleYes(myMember)} size="small" variant="contained" color='error'>yes</Button> 
+          </Typography>
+        </Box>
+      </Modal>
+       {/* Member Remove button modal end */}
+
+      
         </div>
     )
 }
