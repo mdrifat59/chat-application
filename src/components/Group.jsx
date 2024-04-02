@@ -2,7 +2,7 @@ import {React,useEffect,useState} from 'react'
 import GroupImg from '../assets/group.png'  
 import {Button, Typography, Modal, Box, TextField  } from '@mui/material'; 
 import { useSelector } from 'react-redux';
-import { getDatabase, ref, set, push, onValue } from "firebase/database";
+import { getDatabase, ref, set, push, onValue, remove } from "firebase/database";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -57,6 +57,18 @@ const Group = () => {
       userid: userData.uid,
       username:userData.displayName
    })  
+  }
+  let handleCencel = (g)=>{
+    const cencelRef = ref(db, 'grouprequests/');
+    let gid=""
+    onValue(cencelRef, (snapshot) => {
+       snapshot.forEach(item=>{
+        if(item.val().userid == userData.uid && g.groupid == item.groupid){
+              gid=item.key
+            }                  
+          })               
+        });
+          remove(ref(db,"grouprequests/" + gid))
   }
   useEffect(()=>{
     const groupRef = ref(db, 'groups/');
@@ -128,7 +140,10 @@ const Group = () => {
             <div className="button">              
               {groupMemberList.indexOf(item.groupid) !== -1 
                ?
-                 <Button  size="small" variant="contained">Request send</Button>               
+               <>
+                  <Button  size="small" variant="contained">Request send</Button>               
+                  <Button onClick={handleCencel} size="small" variant="contained">Cencel</Button>               
+               </>
                :
                  memberList.indexOf(item.groupid) !== -1
                  ?
