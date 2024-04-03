@@ -147,7 +147,7 @@ const Group = () => {
                :
                  memberList.indexOf(item.groupid) !== -1
                  ?
-                 <Button onClick={()=>handleGroupJoin(item)} size="small" variant="contained">Joined </Button>
+                 <Button size="small" variant="contained">Joined </Button>
                  :
                  <Button onClick={()=>handleGroupJoin(item)} size="small" variant="contained">Join </Button>
                
