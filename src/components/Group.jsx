@@ -139,11 +139,8 @@ const Group = () => {
             </div>
             <div className="button">              
               {groupMemberList.indexOf(item.groupid) !== -1 
-               ?
-               <>
-                  <Button  size="small" variant="contained">Request send</Button>               
-                  <Button onClick={handleCencel} size="small" variant="contained">Cencel</Button>               
-               </>
+               ? 
+                  <Button onClick={handleCencel} size="small" variant="contained">Cencel Req</Button> 
                :
                  memberList.indexOf(item.groupid) !== -1
                  ?
