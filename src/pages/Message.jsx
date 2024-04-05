@@ -6,12 +6,13 @@ import Friends from '../components/Friends';
 import MyGroups from '../components/MyGroups';
 import UserList from '../components/UserList';
 import Block from '../components/Block';
+import MsgGroup from '../components/MsgGroup';
 
 const Message = () => {
   return (
     <Grid container spacing={2}>
     <Grid item xs={4}>
-       <Group/>
+       <MsgGroup/>
        <Friends/>       
     </Grid>
     <Grid item xs={8}>
