@@ -1,8 +1,21 @@
 import React from 'react'
-
+import profile from '../assets/profile.png'
 const Chatbox = () => {
   return (
-    <div>Chatbox</div>
+    <div className='chatbox'>
+        <div className='msgprofile'>
+            <div className="signal">
+                <img width={70} src={profile} />
+                <div className="round"></div>
+            </div>
+            <div>
+            <h3>Shawon Islam</h3>
+            <p>Online</p>
+            </div>
+            </div>
+        <div> box </div>
+        <div> msg</div>
+    </div>
   )
 }
 

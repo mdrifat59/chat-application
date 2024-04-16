@@ -1,12 +1,8 @@
 import React from 'react'
-import { Grid } from '@mui/material'
-import Group from '../components/Group';
-import FriendRequest from '../components/FriendRequest';
-import Friends from '../components/Friends';
-import MyGroups from '../components/MyGroups';
-import UserList from '../components/UserList';
-import Block from '../components/Block';
+import { Grid } from '@mui/material' 
+import Friends from '../components/Friends'; 
 import MsgGroup from '../components/MsgGroup';
+import Chatbox from '../components/Chatbox';
 
 const Message = () => {
   return (
@@ -16,7 +12,7 @@ const Message = () => {
        <Friends button="msg"/>       
     </Grid>
     <Grid item xs={8}>
-      
+        <Chatbox/>
     </Grid> 
   </Grid>
   )
