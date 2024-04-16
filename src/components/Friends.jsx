@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 
 
-const Friends = () => {
+const Friends = ({button}) => {
     const db = getDatabase();
     let userData = useSelector((state) => state.loggedUser.loginuser)
     let [friends, setFriends] = useState([])
@@ -46,6 +46,9 @@ const Friends = () => {
              }) 
         }
     }
+    // let handleMsg =(item)=>{
+        
+    // }
     return (
         <div className='box'>
             <h3>Friends </h3>
@@ -67,15 +70,22 @@ const Friends = () => {
                         }
                         <p>Hi Guys, Wassup!</p>
                     </div>
-                    {/* <div className="button">
-                        <p>Today, 8:56pm</p>
-                    </div> */}
+                    
+                    {button == "msg"
+                    ?
+                    <div className="button">
+                        <Button size="small" variant="contained" color="error">Msg</Button>
+                    </div>
+                    :
+                    <>
                     <div className="button">
                         <Button onClick={()=>handleBlock(item)} size="small" variant="contained" color="error">Block</Button>
                     </div>
                     <div className="button">
                         <Button onClick={() => handleUnFriend(item)} size="small" variant="contained" >Cencel</Button>
                     </div>
+                    </>
+                        }
                 </div>
             ))
         }

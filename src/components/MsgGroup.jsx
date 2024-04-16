@@ -30,6 +30,10 @@ const MsgGroup = () => {
     });
   }, [])
 
+  let handleOpenMember = (item)=>{
+      console.log(item)
+  }
+
   return (
     <div className='box'>
       <h3>Groups</h3>
@@ -45,7 +49,7 @@ const MsgGroup = () => {
               <p>{item.grouptagline}</p>
             </div>
             <div className="button">
-              <Button size="small" variant="contained" color='success'>Admin</Button>
+              <Button onClick={()=>handleOpenMember(item)} size="small" variant="contained" color='success'>Admin</Button>
             </div>
           </div>
         ) : (
@@ -62,7 +66,7 @@ const MsgGroup = () => {
                 <p>{msg.grouptagline}</p>
               </div>
               <div className="button">
-                <Button size="small" variant="contained" color='secondary'>Members</Button>
+                <Button onClick={()=>handleOpenMember(item)} size="small" variant="contained" color='secondary'>Members</Button>
               </div>
             </div>
           )

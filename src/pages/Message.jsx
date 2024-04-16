@@ -13,7 +13,7 @@ const Message = () => {
     <Grid container spacing={2}>
     <Grid item xs={4}>
        <MsgGroup/>
-       <Friends/>       
+       <Friends button="msg"/>       
     </Grid>
     <Grid item xs={8}>
       
