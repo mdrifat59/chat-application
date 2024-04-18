@@ -13,8 +13,65 @@ const Chatbox = () => {
             <p>Online</p>
             </div>
             </div>
-        <div> box </div>
-        <div> msg</div>
+        <div className='msgbox'> 
+            <div className='msg'> 
+              <p className='getmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='getmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='getmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='getmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='getmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='getmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='getmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+        </div>
+        <div> footer</div>
     </div>
   )
 }
