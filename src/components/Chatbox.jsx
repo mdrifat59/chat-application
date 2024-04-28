@@ -1,5 +1,6 @@
 import React from 'react'
 import profile from '../assets/profile.png'
+import registrationimg from '../assets/registrationimg.png'
 const Chatbox = () => {
   return (
     <div className='chatbox'>
@@ -15,11 +16,11 @@ const Chatbox = () => {
             </div>
         <div className='msgbox'> 
             <div className='msg'> 
-              <p className='getmsg'>Hello, Rifat</p>
+              <p className='getimg'><img width={70} src={registrationimg} /></p>
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
-              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='sendimg'><img width={70} src={registrationimg} /></p>
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
