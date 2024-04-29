@@ -48,6 +48,18 @@ const Chatbox = () => {
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
+              <p className='getaudio'>
+              <video width="320" height="240" controls></video>
+              </p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
+              <p className='sendaudio'>
+              <video width="320" height="240" controls></video>
+              </p>
+              <p className='time'>Today, 2:01pm</p>
+            </div>
+            <div className='msg'> 
               <p className='getmsg'>Hello, Rifat</p>
               <p className='time'>Today, 2:01pm</p>
             </div>
