@@ -292,10 +292,23 @@ box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
   }
   .sendimg + .time{
     align-self: flex-end;
-  }
+  } 
   .getimg > div {
     height: 100%; 
   }
   .sendimg > div{
     height: 100%; 
   } 
+  .getaudio{ 
+    display: inline-block; 
+    margin: 10px 0;
+    align-self: flex-start;
+  }
+  .sendaudio{ 
+    display: inline-block; 
+    margin: 10px 0;
+    align-self: flex-end;
+  }
+  .sendaudio + .time{
+    align-self: flex-end;
+  }

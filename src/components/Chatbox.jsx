@@ -17,8 +17,7 @@ const Chatbox = () => {
             </div>
         <div className='msgbox'> 
             <div className='msg'> 
-              <p className='getimg'>
-                {/* <img width={70} src={registrationimg} /> */}
+              <p className='getimg'> 
                 <ModalImage
                   small={registrationimg}
                    large={registrationimg} 
@@ -28,22 +27,24 @@ const Chatbox = () => {
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
-              <p className='sendimg'>
-                {/* <img width={70} src={registrationimg} /> */}
+              <p className='sendimg'> 
                 <ModalImage
                   small={registrationimg}
                    large={registrationimg} 
                       />;
-                </p>
-               
+                </p>               
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
-              <p className='getmsg'>Hello, Rifat</p>
+              <p className='getaudio'>
+                <audio controls></audio>
+              </p>
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
-              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='sendaudio'>
+                <audio controls></audio>
+              </p>
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
