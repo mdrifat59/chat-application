@@ -1,6 +1,7 @@
 import React from 'react'
 import profile from '../assets/profile.png'
 import registrationimg from '../assets/registrationimg.png'
+import ModalImage from "react-modal-image";
 const Chatbox = () => {
   return (
     <div className='chatbox'>
@@ -16,11 +17,25 @@ const Chatbox = () => {
             </div>
         <div className='msgbox'> 
             <div className='msg'> 
-              <p className='getimg'><img width={70} src={registrationimg} /></p>
+              <p className='getimg'>
+                {/* <img width={70} src={registrationimg} /> */}
+                <ModalImage
+                  small={registrationimg}
+                   large={registrationimg} 
+                      />;
+                </p>
+              
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
-              <p className='sendimg'><img width={70} src={registrationimg} /></p>
+              <p className='sendimg'>
+                {/* <img width={70} src={registrationimg} /> */}
+                <ModalImage
+                  small={registrationimg}
+                   large={registrationimg} 
+                      />;
+                </p>
+               
               <p className='time'>Today, 2:01pm</p>
             </div>
             <div className='msg'> 
