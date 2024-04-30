@@ -2,6 +2,7 @@ import React from 'react'
 import profile from '../assets/profile.png'
 import registrationimg from '../assets/registrationimg.png'
 import ModalImage from "react-modal-image";
+import Button from '@mui/material/Button';
 const Chatbox = () => {
   return (
     <div className='chatbox'>
@@ -100,7 +101,12 @@ const Chatbox = () => {
               <p className='time'>Today, 2:01pm</p>
             </div>
         </div>
-        <div> footer</div>
+        <div className='msgcontainer'>
+          <div className='msgwritecon' >
+          <input type="text" className='msgwrite' />
+          </div>
+          <Button variant="contained">Contained</Button>
+        </div>
     </div>
   )
 }
