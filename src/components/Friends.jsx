@@ -46,9 +46,14 @@ const Friends = ({button}) => {
              }) 
         }
     }
-    // let handleMsg =(item)=>{
-        
-    // }
+    let handleMsg =(item)=>{
+        if(item.whosendid == userData.uid){
+            console.log(item.whoreceiveid)
+        }else{
+            console.log(item.whosendid)
+
+        }
+    }
     return (
         <div className='box'>
             <h3>Friends </h3>
@@ -74,7 +79,7 @@ const Friends = ({button}) => {
                     {button == "msg"
                     ?
                     <div className="button">
-                        <Button size="small" variant="contained" color="error">Msg</Button>
+                        <Button onClick={()=>handleMsg(item)} size="small" variant="contained" color="error">Msg</Button>
                     </div>
                     :
                     <>
