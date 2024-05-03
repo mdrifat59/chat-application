@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { getDatabase, ref, onValue } from "firebase/database";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import GroupImg from '../assets/group.png'
 import { Button } from '@mui/material';
+import {activeChat} from '../features/user/activechat/activeChatSlice'
 
 const MsgGroup = () => {
   const db = getDatabase();
   let userData = useSelector((state) => state.loggedUser.loginuser)
+  let dispatch = useDispatch()
   let [myGroup, setMyGroup] = useState([])
   let [groupMembers, setGroupMembers] = useState([])
   useEffect(() => {
@@ -30,8 +32,19 @@ const MsgGroup = () => {
     });
   }, [])
 
-  let handleOpenMember = (item)=>{
-      console.log(item)
+  let handleOpenMember = (item)=>{ 
+      dispatch(activeChat({
+        type:"groupmsg",
+        name:item.groupname,
+        id:item.groupid
+    }))
+    localStorage.setItem("activeChat", JSON.stringify(
+      {
+        type:"groupmsg",
+        name:item.groupname,
+        id:item.groupid
+    }
+    ))
   }
 
   return (
