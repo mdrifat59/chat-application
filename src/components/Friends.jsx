@@ -21,6 +21,33 @@ const Friends = ({ button }) => {
                 }
             })
             setFriends(arr);
+            if (arr[0].whosendid == userData.uid){
+                dispatch(activeChat({
+                    type: "singlemsg",
+                    name: arr[0].whoreceivename,
+                    id: arr[0].whoreceiveid
+                }))
+                localStorage.setItem("activeChat", JSON.stringify(
+                    {
+                      type:"singlemsg",
+                      name:arr[0].whoreceivename,
+                      id:arr[0].whoreceiveid
+                  }
+                  ))
+            }else{
+                dispatch(activeChat({
+                    type: "singlemsg",
+                    name: arr[0].whosendname,
+                    id: arr[0].whosendid
+                }))
+                localStorage.setItem("activeChat", JSON.stringify(
+                    {
+                        type: "singlemsg",
+                        name: arr[0].whosendname,
+                        id: arr[0].whosendid
+                    }
+                ))
+            }
         });
     }, [])
     let handleUnFriend = (item) => {
