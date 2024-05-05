@@ -107,7 +107,7 @@ const Chatbox = () => {
           <div className='msgwritecon' >
           <input type="text" className='msgwrite' />
           </div>
-          <Button variant="contained">Contained</Button>
+          <Button variant="contained">send</Button>
         </div>
     </div>
   )
