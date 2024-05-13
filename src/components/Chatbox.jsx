@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import profile from '../assets/profile.png'
 import registrationimg from '../assets/registrationimg.png'
 import ModalImage from "react-modal-image";
 import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
-import { getDatabase, ref, set, push } from "firebase/database";
+import { getDatabase, ref, set, push, onValue  } from "firebase/database";
 import moment from 'moment';
 
 const Chatbox = () => {
@@ -12,13 +12,14 @@ const Chatbox = () => {
   let activeChat = useSelector((state) => state.activeChat.activeChat)
   let userData = useSelector((state) => state.loggedUser.loginuser)
   let [msg, setMsg]=useState("")
+  let [msglist, setMsgList]= useState([])
 
   let handleChat = ()=>{ 
     if(activeChat.type == "groupmsg"){
       console.log("groupmsg")
     }else{
       if(msg != ""){
-        set(push(ref(db, 'singlemsg/')), {
+        set(push(ref(db, 'singlemsg')), {
           whosendname: userData.displayName,
           whosendid:userData.uid,
           whorecivename:activeChat.name,
@@ -29,6 +30,18 @@ const Chatbox = () => {
       }
     } 
   }
+  useEffect (()=>{
+    const msgRef = ref(db, 'singlemsg');
+    onValue(msgRef, (snapshot) => {
+      let arr =[]
+      snapshot.forEach(item=>{
+        if(item.val().whosendid == userData.uid && item.val().whoreciveid == activeChat.id || item.val().whosendid == activeChat.id && item.val().whoreciveid == userData.uid){
+            arr.push(item.val())
+        }          
+      })
+      setMsgList(arr)
+    });
+  },[])
   return (
     <div className='chatbox'>
         <div className='msgprofile'>
@@ -42,7 +55,7 @@ const Chatbox = () => {
             </div>
             </div>
         <div className='msgbox'> 
-            <div className='msg'> 
+            {/* <div className='msg'> 
               <p className='getimg'> 
                 <ModalImage
                   small={registrationimg}
@@ -60,8 +73,8 @@ const Chatbox = () => {
                       />;
                 </p>               
               <p className='time'>Today, 2:01pm</p>
-            </div>
-            <div className='msg'> 
+            </div> */}
+            {/* <div className='msg'> 
               <p className='getaudio'>
                 <audio controls></audio>
               </p>
@@ -84,47 +97,20 @@ const Chatbox = () => {
               <video width="320" height="240" controls></video>
               </p>
               <p className='time'>Today, 2:01pm</p>
-            </div>
+            </div> */}
+            {msglist.map(item=>(
+              item.whosendid == userData.uid ?
             <div className='msg'> 
-              <p className='getmsg'>Hello, Rifat</p>
+              <p className='sendmsg'>{item.msg}</p>
               <p className='time'>Today, 2:01pm</p>
             </div>
+              :
             <div className='msg'> 
-              <p className='sendmsg'>Hello, Rifat</p>
+              <p className='getmsg'>{item.msg}</p>
               <p className='time'>Today, 2:01pm</p>
             </div>
-            <div className='msg'> 
-              <p className='getmsg'>Hello, Rifat</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-            <div className='msg'> 
-              <p className='sendmsg'>Hello, Rifat</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-            <div className='msg'> 
-              <p className='getmsg'>Hello, Rifat</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-            <div className='msg'> 
-              <p className='sendmsg'>Hello, Rifat</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-            <div className='msg'> 
-              <p className='getmsg'>Hello, Rifat</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-            <div className='msg'> 
-              <p className='sendmsg'>Hello, Rifat</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-            <div className='msg'> 
-              <p className='getmsg'>Hello, Rifat</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-            <div className='msg'> 
-              <p className='sendmsg'>Hello, Rifat</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
+            ))}
+            
         </div>
         <div className='msgcontainer'>
           <div className='msgwritecon' >
