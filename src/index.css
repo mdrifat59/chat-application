@@ -239,6 +239,8 @@ box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
     font-weight: bold;
     margin: 10px 0;
     align-self: flex-start;
+    max-width: 80%;
+    word-wrap: break-word;
   }
   .getimg{
     background: #F1F1F1;
@@ -283,6 +285,8 @@ box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
     margin: 10px 0;
     color: #FFFFFF;
      align-self: flex-end;
+     max-width: 80%;
+     word-wrap: break-word;
   }
   .time{
     color: rgba(0, 0, 0, .60);
