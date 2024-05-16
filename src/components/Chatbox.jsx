@@ -4,58 +4,80 @@ import registrationimg from '../assets/registrationimg.png'
 import ModalImage from "react-modal-image";
 import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
-import { getDatabase, ref, set, push, onValue  } from "firebase/database";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import moment from 'moment';
 
 const Chatbox = () => {
   const db = getDatabase();
   let activeChat = useSelector((state) => state.activeChat.activeChat)
   let userData = useSelector((state) => state.loggedUser.loginuser)
-  let [msg, setMsg]=useState("")
-  let [msglist, setMsgList]= useState([])
+  let [msg, setMsg] = useState("")
+  let [msglist, setMsgList] = useState([])
 
-  let handleChat = ()=>{ 
-    if(activeChat.type == "groupmsg"){
+  let handleChat = () => {
+    if (activeChat.type == "groupmsg") {
       console.log("groupmsg")
-    }else{
-      if(msg != ""){
+    } else {
+      if (msg != "") {
         set(push(ref(db, 'singlemsg')), {
           whosendname: userData.displayName,
-          whosendid:userData.uid,
-          whorecivename:activeChat.name,
-          whoreciveid:activeChat.id,
-          msg:msg,
-          date:`${new Date().getFullYear()}-${new Date().getMonth() +1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+          whosendid: userData.uid,
+          whorecivename: activeChat.name,
+          whoreciveid: activeChat.id,
+          msg: msg,
+          date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
         });
       }
-    } 
+    }
   }
-  useEffect (()=>{
+  useEffect(() => {
     const msgRef = ref(db, 'singlemsg');
     onValue(msgRef, (snapshot) => {
-      let arr =[]
-      snapshot.forEach(item=>{
-        if(item.val().whosendid == userData.uid && item.val().whoreciveid == activeChat.id || item.val().whosendid == activeChat.id && item.val().whoreciveid == userData.uid){
-            arr.push(item.val())
-        }          
+      let arr = []
+      snapshot.forEach(item => {
+        if (item.val().whosendid == userData.uid && item.val().whoreciveid == activeChat.id || item.val().whosendid == activeChat.id && item.val().whoreciveid == userData.uid) {
+          arr.push(item.val())
+        }
       })
       setMsgList(arr)
     });
-  },[])
+  }, [activeChat.id])
+
+  let handleMsg = (e)=>{
+     setMsg(e.target.value)
+  }
+  let handleKeyPress =(e)=>{
+       if(e.key == "Enter"){
+        if (activeChat.type == "groupmsg") {
+          console.log("groupmsg")
+        } else {
+          if (msg != "") {
+            set(push(ref(db, 'singlemsg')), {
+              whosendname: userData.displayName,
+              whosendid: userData.uid,
+              whorecivename: activeChat.name,
+              whoreciveid: activeChat.id,
+              msg: msg,
+              date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+            });
+          }
+        }
+       }
+  }
   return (
     <div className='chatbox'>
-        <div className='msgprofile'>
-            <div className="signal">
-                <img width={70} src={profile} />
-                <div className="round"></div>
-            </div>
-            <div>
-            <h3>{activeChat.name}</h3>
-            <p>Online</p>
-            </div>
-            </div>
-        <div className='msgbox'> 
-            {/* <div className='msg'> 
+      <div className='msgprofile'>
+        <div className="signal">
+          <img width={70} src={profile} />
+          <div className="round"></div>
+        </div>
+        <div>
+          <h3>{activeChat.name}</h3>
+          <p>Online</p>
+        </div>
+      </div>
+      <div className='msgbox'>
+        {/* <div className='msg'> 
               <p className='getimg'> 
                 <ModalImage
                   small={registrationimg}
@@ -74,7 +96,7 @@ const Chatbox = () => {
                 </p>               
               <p className='time'>Today, 2:01pm</p>
             </div> */}
-            {/* <div className='msg'> 
+        {/* <div className='msg'> 
               <p className='getaudio'>
                 <audio controls></audio>
               </p>
@@ -98,26 +120,29 @@ const Chatbox = () => {
               </p>
               <p className='time'>Today, 2:01pm</p>
             </div> */}
-            {msglist.map(item=>(
-              item.whosendid == userData.uid ?
-            <div className='msg'> 
-              <p className='sendmsg'>{item.msg}</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-              :
-            <div className='msg'> 
-              <p className='getmsg'>{item.msg}</p>
-              <p className='time'>Today, 2:01pm</p>
-            </div>
-            ))}
-            
+        {activeChat.type == "singlemsg" ?
+          msglist.map(item => (
+            item.whosendid == userData.uid && item.whoreciveid == activeChat.id ?
+              <div className='msg'>
+                <p className='sendmsg'>{item.msg}</p>
+                <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
+              </div>
+              : item.whosendid == activeChat.id && item.whoreciveid == userData.uid &&
+              <div className='msg'>
+                <p className='getmsg'>{item.msg}</p>
+                <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
+              </div>
+          ))
+          : <h1>Group</h1>
+        }
+
+      </div>
+      <div className='msgcontainer'>
+        <div className='msgwritecon' >
+          <input onChange={handleMsg} type="text" className='msgwrite' onKeyUp={handleKeyPress} />
         </div>
-        <div className='msgcontainer'>
-          <div className='msgwritecon' >
-          <input onChange={(e)=>setMsg(e.target.value)} type="text" className='msgwrite' />
-          </div>
-          <Button variant="contained" onClick={handleChat}>send</Button>
-        </div>
+        <Button variant="contained" onClick={handleChat}>send</Button>
+      </div>
     </div>
   )
 }
