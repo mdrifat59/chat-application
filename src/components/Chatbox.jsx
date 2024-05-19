@@ -13,10 +13,20 @@ const Chatbox = () => {
   let userData = useSelector((state) => state.loggedUser.loginuser)
   let [msg, setMsg] = useState("")
   let [msglist, setMsgList] = useState([])
+  let [groupMsglist, setGroupMsgList] = useState([])
 
   let handleChat = () => {
     if (activeChat.type == "groupmsg") {
-      console.log("groupmsg")
+      if (msg != "") {
+        set(push(ref(db, 'groupmsg')), {
+          whosendname: userData.displayName,
+          whosendid: userData.uid,
+          whorecivename: activeChat.name,
+          whoreciveid: activeChat.id,
+          msg: msg,
+          date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+        });
+      }
     } else {
       if (msg != "") {
         set(push(ref(db, 'singlemsg')), {
@@ -43,13 +53,35 @@ const Chatbox = () => {
     });
   }, [activeChat.id])
 
+  useEffect(() => {
+    const msgRef = ref(db, 'groupmsg');
+    onValue(msgRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(item => {
+        // if (item.val().whosendid == userData.uid && item.val().whoreciveid == activeChat.id || item.val().whosendid == activeChat.id && item.val().whoreciveid == userData.uid) {
+          arr.push(item.val())
+        // }
+      })
+      setGroupMsgList(arr)
+    });
+  }, [activeChat.id])
+
   let handleMsg = (e)=>{
      setMsg(e.target.value)
   }
   let handleKeyPress =(e)=>{
        if(e.key == "Enter"){
         if (activeChat.type == "groupmsg") {
-          console.log("groupmsg")
+          if (msg != "") {
+            set(push(ref(db, 'groupmsg')), {
+              whosendname: userData.displayName,
+              whosendid: userData.uid,
+              whorecivename: activeChat.name,
+              whoreciveid: activeChat.id,
+              msg: msg,
+              date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+            });
+          }
         } else {
           if (msg != "") {
             set(push(ref(db, 'singlemsg')), {
@@ -133,8 +165,19 @@ const Chatbox = () => {
                 <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
               </div>
           ))
-          : <h1>Group</h1>
-        }
+          : groupMsglist.map(item => (
+            item.whosendid == userData.uid && item.whoreciveid == activeChat.id ?
+              <div className='msg'>
+                <p className='sendmsg'>{item.msg}</p>
+                <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
+              </div>
+              : item.whoreciveid == activeChat.id &&
+              <div className='msg'>
+                <p className='getmsg'>{item.msg}</p>
+                <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
+              </div>
+          ))
+             }
 
       </div>
       <div className='msgcontainer'>
