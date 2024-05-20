@@ -9,6 +9,23 @@ import { getStorage, ref as imgref, uploadBytesResumable, getDownloadURL } from 
 import moment from 'moment';
 import { IoCloudUploadOutline } from "react-icons/io5";
 import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box'; 
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 const Chatbox = () => {
   const storage = getStorage();
@@ -18,6 +35,7 @@ const Chatbox = () => {
   let [msg, setMsg] = useState("")
   let [msglist, setMsgList] = useState([])
   let [groupMsglist, setGroupMsgList] = useState([])
+  let [progress, setProgress]=useState(0)
 
   let handleChat = () => {
     if (activeChat.type == "groupmsg") {
@@ -84,7 +102,7 @@ const Chatbox = () => {
               whoreciveid: activeChat.id,
               msg: msg,
               date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-            });
+            }) 
           }
         } else {
           if (msg != "") {
@@ -95,10 +113,10 @@ const Chatbox = () => {
               whoreciveid: activeChat.id,
               msg: msg,
               date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-            });
+            })
           }
         }
-       }
+       } 
   }
   let handleImageUpload =(e)=>{
       console.log(e.target.files[0])
@@ -110,13 +128,37 @@ const Chatbox = () => {
     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
     console.log('Upload is ' + progress + '% done');
-    
+    setProgress(progress)
   }, 
   (error) => { 
   }, 
   () => { 
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
       console.log('File available at', downloadURL);
+      setProgress(0)
+      if (activeChat.type == "groupmsg") {
+         
+          set(push(ref(db, 'groupmsg')), {
+            whosendname: userData.displayName,
+            whosendid: userData.uid,
+            whorecivename: activeChat.name,
+            whoreciveid: activeChat.id,
+            img: downloadURL,
+            date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+          });
+        
+      } else {
+         
+          set(push(ref(db, 'singlemsg')), {
+            whosendname: userData.displayName,
+            whosendid: userData.uid,
+            whorecivename: activeChat.name,
+            whoreciveid: activeChat.id,
+            img: downloadURL,
+            date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+          });
+        
+      }
     });
   }
 );
@@ -181,24 +223,64 @@ const Chatbox = () => {
           msglist.map(item => (
             item.whosendid == userData.uid && item.whoreciveid == activeChat.id ?
               <div className='msg'>
+                {item.msg ?
+                
                 <p className='sendmsg'>{item.msg}</p>
+                :
+                <p className='sendimg'> 
+                <ModalImage
+                  small={item.img}
+                   large={item.img} 
+                      />
+                </p>
+                }
                 <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
               </div>
               : item.whosendid == activeChat.id && item.whoreciveid == userData.uid &&
               <div className='msg'>
+                    {item.msg ?
+                
                 <p className='getmsg'>{item.msg}</p>
+                :
+                <p className='getimg'> 
+                <ModalImage
+                  small={item.img}
+                   large={item.img} 
+                      />
+                </p>
+                }
                 <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
               </div>
           ))
           : groupMsglist.map(item => (
             item.whosendid == userData.uid && item.whoreciveid == activeChat.id ?
               <div className='msg'>
+                  {item.msg ?
+                
                 <p className='sendmsg'>{item.msg}</p>
+                :
+                <p className='sendimg'> 
+                <ModalImage
+                  small={item.img}
+                   large={item.img} 
+                      />
+                </p>
+                }
                 <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
               </div>
               : item.whoreciveid == activeChat.id &&
               <div className='msg'>
+                  {item.msg ?
+                
                 <p className='getmsg'>{item.msg}</p>
+                :
+                <p className='getimg'> 
+                <ModalImage
+                  small={item.img}
+                   large={item.img} 
+                      />
+                </p>
+                }
                 <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
               </div>
           ))
@@ -214,7 +296,12 @@ const Chatbox = () => {
           </label>
         </div>
         <Button variant="contained" onClick={handleChat}>send</Button>
-      </div>
+      </div> 
+      {progress !== 0 &&
+            <Box sx={{ width: '100%' }}>
+               <LinearProgressWithLabel value={progress} />
+            </Box>
+      }
     </div>
   )
 }
