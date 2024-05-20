@@ -5,9 +5,13 @@ import ModalImage from "react-modal-image";
 import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
+import { getStorage, ref as imgref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import moment from 'moment';
+import { IoCloudUploadOutline } from "react-icons/io5";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const Chatbox = () => {
+  const storage = getStorage();
   const db = getDatabase();
   let activeChat = useSelector((state) => state.activeChat.activeChat)
   let userData = useSelector((state) => state.loggedUser.loginuser)
@@ -96,6 +100,27 @@ const Chatbox = () => {
         }
        }
   }
+  let handleImageUpload =(e)=>{
+      console.log(e.target.files[0])
+      const storageRef = imgref(storage, `images/${e.target.files[0].name}`);
+      const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
+      uploadTask.on('state_changed', 
+  (snapshot) => {
+    // Observe state change events such as progress, pause, and resume
+    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    console.log('Upload is ' + progress + '% done');
+    
+  }, 
+  (error) => { 
+  }, 
+  () => { 
+    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      console.log('File available at', downloadURL);
+    });
+  }
+);
+  }
   return (
     <div className='chatbox'>
       <div className='msgprofile'>
@@ -183,6 +208,10 @@ const Chatbox = () => {
       <div className='msgcontainer'>
         <div className='msgwritecon' >
           <input onChange={handleMsg} type="text" className='msgwrite' onKeyUp={handleKeyPress} />
+          <label>
+          <IoCloudUploadOutline style={{position:"absolute", top:"10px", right:"20px"}} />
+          <input onChange={handleImageUpload} type="file" hidden />
+          </label>
         </div>
         <Button variant="contained" onClick={handleChat}>send</Button>
       </div>
