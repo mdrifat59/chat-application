@@ -244,8 +244,7 @@ box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
   }
   .getimg{ 
     border: 5px solid #F1F1F1;
-    display: inline-block;
-    padding: 7px;
+    display: inline-block; 
     border-radius: 10px;
     font-weight: bold;
     margin: 10px 0;
@@ -261,8 +260,7 @@ box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
   }
   .sendimg{ 
     border: 5px solid #5F35F5;
-    display: inline-block;
-    padding: 7px;
+    display: inline-block; 
     border-radius: 10px;
     font-weight: bold;
     margin: 10px 0;
@@ -334,4 +332,9 @@ box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
      justify-content: space-between;
      padding: 25px 0; 
      border-top: 2px solid #000000;
+  }
+  .emojiholder{
+    position: absolute;
+    bottom: 40px;
+    right: 0;
   }

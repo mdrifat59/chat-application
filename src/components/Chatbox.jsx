@@ -8,9 +8,11 @@ import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { getStorage, ref as imgref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import moment from 'moment';
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; 
+import EmojiPicker from 'emoji-picker-react';
 
 function LinearProgressWithLabel(props) {
   return (
@@ -36,6 +38,7 @@ const Chatbox = () => {
   let [msglist, setMsgList] = useState([])
   let [groupMsglist, setGroupMsgList] = useState([])
   let [progress, setProgress]=useState(0)
+  let [showemo, setShowemo]=useState(false)
 
   let handleChat = () => {
     if (activeChat.type == "groupmsg") {
@@ -61,6 +64,8 @@ const Chatbox = () => {
         });
       }
     }
+    setShowemo(false)
+    setMsg("")
   }
   useEffect(() => {
     const msgRef = ref(db, 'singlemsg');
@@ -162,6 +167,9 @@ const Chatbox = () => {
     });
   }
 );
+  }
+  let handleEmoji =(emo)=>{ 
+      setMsg(msg+emo.emoji)
   }
   return (
     <div className='chatbox'>
@@ -289,11 +297,17 @@ const Chatbox = () => {
       </div>
       <div className='msgcontainer'>
         <div className='msgwritecon' >
-          <input onChange={handleMsg} type="text" className='msgwrite' onKeyUp={handleKeyPress} />
+          <input onChange={handleMsg} value={msg} className='msgwrite' onKeyUp={handleKeyPress} />
           <label>
           <IoCloudUploadOutline style={{position:"absolute", top:"10px", right:"20px"}} />
           <input onChange={handleImageUpload} type="file" hidden />
           </label>
+          <MdOutlineEmojiEmotions onClick={()=>setShowemo(!showemo)} style={{position:"absolute", top:"10px", right:"40px"}} />
+          {showemo &&
+          <div className='emojiholder'>
+              <EmojiPicker onEmojiClick={handleEmoji} />
+             </div>
+             }
         </div>
         <Button variant="contained" onClick={handleChat}>send</Button>
       </div> 
@@ -301,7 +315,7 @@ const Chatbox = () => {
             <Box sx={{ width: '100%' }}>
                <LinearProgressWithLabel value={progress} />
             </Box>
-      }
+      }     
     </div>
   )
 }
