@@ -42,10 +42,12 @@ const Chatbox = () => {
   let [progress, setProgress]=useState(0)
   let [showemo, setShowemo]=useState(false)
   let [audiourl, setAudiourl]=useState("")
+  let [audiourlup, setAudiourlup]=useState("")
 
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);  
     setAudiourl(url)
+    setAudiourlup(blob)
   };
 
   let handleChat = () => {
@@ -179,6 +181,52 @@ const Chatbox = () => {
   let handleEmoji =(emo)=>{ 
       setMsg(msg+emo.emoji)
   }
+  let handleAudiochat =()=>{
+    const storageRef = imgref(storage, audiourl);
+    const uploadTask = uploadBytesResumable(storageRef, audiourlup);
+    uploadTask.on('state_changed', 
+    (snapshot) => {
+      // Observe state change events such as progress, pause, and resume
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      // console.log('Upload is ' + progress + '% done');
+      setProgress(progress)
+    }, 
+    (error) => { 
+    }, 
+    () => { 
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        // console.log('File available at', downloadURL);
+        console.log(downloadURL)
+        setProgress(0)
+        if (activeChat.type == "groupmsg") {
+           
+            set(push(ref(db, 'groupmsg')), {
+              whosendname: userData.displayName,
+              whosendid: userData.uid,
+              whorecivename: activeChat.name,
+              whoreciveid: activeChat.id,
+              audio: downloadURL,
+              date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+            });
+          
+        } else {
+           
+            set(push(ref(db, 'singlemsg')), {
+              whosendname: userData.displayName,
+              whosendid: userData.uid,
+              whorecivename: activeChat.name,
+              whoreciveid: activeChat.id,
+              audio: downloadURL,
+              date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+            });
+          
+        }
+      });
+    }
+  );
+  setAudiourl("")
+  }
   return (
     <div className='chatbox'>
       <div className='msgprofile'>
@@ -239,16 +287,19 @@ const Chatbox = () => {
           msglist.map(item => (
             item.whosendid == userData.uid && item.whoreciveid == activeChat.id ?
               <div className='msg'>
-                {item.msg ?
-                
+                {item.msg ?                
                 <p className='sendmsg'>{item.msg}</p>
-                :
+                : item.img ?
                 <p className='sendimg'> 
                 <ModalImage
                   small={item.img}
                    large={item.img} 
                       />
                 </p>
+                : 
+                  <p className='sendaudio'>
+                  <audio src={item.audio} controls></audio>
+                  </p>
                 }
                 <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
               </div>
@@ -257,13 +308,17 @@ const Chatbox = () => {
                     {item.msg ?
                 
                 <p className='getmsg'>{item.msg}</p>
-                :
+                : item.img ?
                 <p className='getimg'> 
                 <ModalImage
                   small={item.img}
                    large={item.img} 
                       />
                 </p>
+                :
+                  <p className='getaudio'>
+                  <audio src={item.audio} controls></audio>
+                  </p>
                 }
                 <p className='time'>{moment(item.date, "YYYYMMDD hh:mm").fromNow()}</p>
               </div>
@@ -329,9 +384,14 @@ const Chatbox = () => {
                 downloadFileExtension="webm"
               />
         </div>
-        <Button variant="contained" onClick={handleChat}>send</Button>
+        {!audiourl &&
+          <Button variant="contained" onClick={handleChat}>send</Button>
+        }
         {audiourl &&
+        <>
+          <Button style={{margin:"0 0 0 5px"}} variant="contained" onClick={handleAudiochat}>Send Audio</Button>
           <Button style={{margin:"0 0 0 5px"}} variant="contained" onClick={()=>setAudiourl("")}>Cencel</Button>
+        </>
         }
       </div> 
       {progress !== 0 &&
