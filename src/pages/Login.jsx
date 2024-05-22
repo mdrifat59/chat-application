@@ -10,7 +10,7 @@ import { Link,useNavigate } from "react-router-dom";
 import { FaEye,FaRegEyeSlash } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux'
-import { userdata } from '../features/user/userSlice';
+import { userdata } from '../features/user/userSlice'; 
 
 
 let initialvalues ={
@@ -73,7 +73,7 @@ const Login = () => {
     signInWithPopup(auth, provider).then((result) => {
      console.log(result)
     })
-  }
+  } 
   return (
     <Grid container spacing={2}>
     <Grid item xs={6}>

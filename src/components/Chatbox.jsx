@@ -13,6 +13,8 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'; 
 import EmojiPicker from 'emoji-picker-react';
+import ReactDOM from "react-dom/client";
+import { AudioRecorder } from 'react-audio-voice-recorder';
 
 function LinearProgressWithLabel(props) {
   return (
@@ -39,6 +41,12 @@ const Chatbox = () => {
   let [groupMsglist, setGroupMsgList] = useState([])
   let [progress, setProgress]=useState(0)
   let [showemo, setShowemo]=useState(false)
+  let [audiourl, setAudiourl]=useState("")
+
+  const addAudioElement = (blob) => {
+    const url = URL.createObjectURL(blob);  
+    setAudiourl(url)
+  };
 
   let handleChat = () => {
     if (activeChat.type == "groupmsg") {
@@ -298,6 +306,9 @@ const Chatbox = () => {
       <div className='msgcontainer'>
         <div className='msgwritecon' >
           <input onChange={handleMsg} value={msg} className='msgwrite' onKeyUp={handleKeyPress} />
+          {audiourl &&
+            <audio className='audiocontainer' src={audiourl} controls></audio>
+          }
           <label>
           <IoCloudUploadOutline style={{position:"absolute", top:"10px", right:"20px"}} />
           <input onChange={handleImageUpload} type="file" hidden />
@@ -308,8 +319,20 @@ const Chatbox = () => {
               <EmojiPicker onEmojiClick={handleEmoji} />
              </div>
              }
+              <AudioRecorder 
+                onRecordingComplete={addAudioElement}
+                audioTrackConstraints={{
+                  noiseSuppression: true,
+                  echoCancellation: true,
+                }} 
+                downloadOnSavePress={false}
+                downloadFileExtension="webm"
+              />
         </div>
         <Button variant="contained" onClick={handleChat}>send</Button>
+        {audiourl &&
+          <Button style={{margin:"0 0 0 5px"}} variant="contained" onClick={()=>setAudiourl("")}>Cencel</Button>
+        }
       </div> 
       {progress !== 0 &&
             <Box sx={{ width: '100%' }}>
