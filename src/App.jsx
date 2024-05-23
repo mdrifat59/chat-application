@@ -12,6 +12,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Message from "./pages/Message";
 import RootLayout from "./components/RootLayout";
+import Switch from '@mui/material/Switch';
+import { useState } from "react";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,9 +30,19 @@ const router = createBrowserRouter(
 );
 
 function App() { 
+  let [dark, setDark]=useState(false)
+  let handleChange =(e)=>{
+    if(dark ){
+      setDark(false)
+      console.log("Dark")
+    }else{
+      setDark(true)
+      console.log("light")
+    }
+  }
 
   return (
-    <>
+    <>    
       <ToastContainer
   position="bottom-center"
   autoClose={5000}
@@ -45,8 +57,10 @@ function App() {
   theme="dark"
   transition: Slide
   />
-
+        <div className={dark && "dark"}>
+        <Switch onChange={handleChange} /> 
        <RouterProvider router={router} />
+        </div>
     </>
   )
 }

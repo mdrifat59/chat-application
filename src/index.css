@@ -5,6 +5,48 @@
 ul,ol{
     list-style: none;
 }
+/* =========== Dark mode start */
+.dark{
+  background: #000000;
+}
+.dark .box{
+  background: #000000;
+  -webkit-box-shadow: 0px 0px 28px -6px rgba(255, 255, 255, 0.5);
+  -moz-box-shadow: 0px 0px 28px -6px rgba(255, 254, 254, 0.5);
+  box-shadow: 0px 0px 28px -6px rgba(255, 255, 255, 0.5);
+}
+.dark .list{
+  border-bottom: 1px  solid #4D4D4D;
+
+}
+.dark .box h3{
+  color: #fff;
+}
+.dark .box h2{
+  color: #fff;
+}
+.dark .box .list .details {
+  color: #fff;
+}
+.dark .box .list .details p{
+  color: #fff;
+}
+.dark .box .title{
+  background: #000;
+  color: #fff;
+}
+.dark .chatbox{
+  -webkit-box-shadow: 0px 0px 44px -6px rgba(250, 250, 250, 0.5);
+  -moz-box-shadow: 0px 0px 44px -6px rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 44px -6px rgba(255, 255, 255, 0.5);
+}
+.dark .msgprofile{
+  color: #fff;
+}
+.dark .msg .time{
+  color: #fff;
+}
+/* =========== Dark mode end */
 /* ========= registration page start =========== */
 .regiimg{
     width: 100%;
@@ -138,21 +180,21 @@ ul,ol{
     -webkit-box-shadow: 0px 0px 28px -6px rgba(0,0,0,0.33);
     -moz-box-shadow: 0px 0px 28px -6px rgba(0,0,0,0.33);
     box-shadow: 0px 0px 28px -6px rgba(0,0,0,0.33);
-  }
+  }  
   .list{
     display: flex;
     column-gap: 20px;
     margin: 20px 0;
     padding-bottom: 10px;
     border-bottom: 1px  solid #4D4D4D;
-  }
+  } 
   .box .title{
     position: sticky;
     top: 0;
     left: 0;
     background: #fff;
     padding: 10px 0; 
-  }
+  }  
   .box .title{
     display: flex;
     justify-content: space-between;
@@ -200,7 +242,7 @@ ul,ol{
     -webkit-box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
 -moz-box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
 box-shadow: 0px 0px 44px -6px rgba(0,0,0,0.49);
-  }
+  }  
   .msgprofile{
     display: flex;
     align-items: center;
