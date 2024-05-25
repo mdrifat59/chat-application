@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, createRef } from 'react'
 import { Outlet, Link,useLocation, useNavigate  } from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import profile from '../assets/profile.png'   
@@ -6,26 +6,75 @@ import { AiOutlineMessage } from "react-icons/ai";
 import { IoIosNotificationsOutline,IoMdSettings,IoIosLogOut,IoIosHome    } from "react-icons/io"; 
 import { getAuth, signOut } from "firebase/auth";
 import { useSelector } from 'react-redux';
+import Box from '@mui/material/Box';
+// import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';  
+import Cropper  from "react-cropper";
+import "cropperjs/dist/cropper.css"; 
 
+const defaultSrc =
+  "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
 
-const RootLayout = () => {
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+const RootLayout = () => { 
   const auth = getAuth();
   const location = useLocation(); 
   let navigate =useNavigate()
   let userData= useSelector((state)=>state.loggedUser.loginuser)
+  // mordal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  // cropper
+ const [image, setImage] = useState(defaultSrc);
+  const [cropData, setCropData] = useState("#");
+  const cropperRef = createRef();
+  const onChange = (e) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  };
+  const handleCropData = () => {
+    if (typeof cropperRef.current?.cropper !== "undefined") {
+      setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+    }
+  }; 
+  
+// logout
   let handleLogOut =()=>{ 
     signOut(auth).then(() => {
       localStorage.removeItem("user")
       navigate("/login")
       }) 
-}
+} 
   return (
     <>
          <Grid container spacing={2}>
         <Grid item xs={1}>
             <div className='navbar'>
               <div className="navcontainer">
-                <img src={profile} />
+                <img onClick={handleOpen} src={profile} />
                 <h4 className='username'>{userData.displayName}</h4>
                 <ul>
                   <li>
@@ -53,6 +102,39 @@ const RootLayout = () => {
           <Outlet/>
         </Grid> 
       </Grid>
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Profile Pic
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <div className='img-preview'></div>
+          <input type="file" onChange={onChange} />
+          <Cropper
+          ref={cropperRef}
+          style={{ height: 400, width: "100%" }}
+          zoomTo={0.5}
+          initialAspectRatio={1}
+          preview=".img-preview"
+          src={image}
+          viewMode={1}
+          minCropBoxHeight={10}
+          minCropBoxWidth={10}
+          background={false}
+          responsive={true}
+          autoCropArea={1}
+          checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+          guides={true}
+        />
+        <button onClick={handleCropData}>upload</button> 
+          </Typography>
+        </Box>
+      </Modal>
 
     </>
   )
