@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';  
 import Cropper  from "react-cropper";
 import "cropperjs/dist/cropper.css"; 
+import { getStorage, ref, uploadString } from "firebase/storage";
 
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
@@ -33,6 +34,8 @@ const RootLayout = () => {
   const location = useLocation(); 
   let navigate =useNavigate()
   let userData= useSelector((state)=>state.loggedUser.loginuser)
+  const storage = getStorage();
+  const storageRef = ref(storage, `profile/${"img"}`);
   // mordal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -58,7 +61,12 @@ const RootLayout = () => {
   const handleCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+      const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
+    uploadString(storageRef, message4, 'data_url').then((snapshot) => {
+      console.log('Uploaded a data_url string!');
+});
     }
+    setOpen(false)
   }; 
   
 // logout
