@@ -15,6 +15,7 @@ import "cropperjs/dist/cropper.css";
 import { getStorage, ref, uploadString, getDownloadURL, connectStorageEmulator } from "firebase/storage";
 import { getDatabase, ref as rref, set } from "firebase/database"; 
  import { userdata } from '../features/user/userSlice';
+ import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
 
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
@@ -99,7 +100,8 @@ const RootLayout = () => {
             <div className='navbar'>
               <div className="navcontainer">
                 <img onClick={handleOpen} src={userData.photoURL} />
-                <h4 className='username'>{userData.displayName}</h4>
+                <h4 className='username'>{userData.displayName} <MdOutlineDriveFileRenameOutline className='username-icon'/></h4>
+                
                 <ul>
                   <li>
                      <Link to="/chat/home" className={location.pathname ==  "/chat/home" ? 'active' : 'icon'}>
