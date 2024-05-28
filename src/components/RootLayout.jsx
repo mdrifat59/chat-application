@@ -1,15 +1,11 @@
 import React, { useState, createRef } from 'react'
-import { Outlet, Link,useLocation, useNavigate  } from 'react-router-dom'
-import Grid from '@mui/material/Grid';
-import profile from '../assets/profile.png'   
+import { Outlet, Link,useLocation, useNavigate  } from 'react-router-dom' 
 import { AiOutlineMessage } from "react-icons/ai";
 import { IoIosNotificationsOutline,IoMdSettings,IoIosLogOut,IoIosHome    } from "react-icons/io"; 
 import { getAuth, signOut } from "firebase/auth";
 import { useSelector, useDispatch } from 'react-redux';
-import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';  
+import {Box, TextField, Grid, Modal, Button } from '@mui/material'; 
+import Typography from '@mui/material/Typography'; 
 import Cropper  from "react-cropper";
 import "cropperjs/dist/cropper.css"; 
 import { getStorage, ref, uploadString, getDownloadURL, connectStorageEmulator } from "firebase/storage";
@@ -41,10 +37,15 @@ const RootLayout = () => {
   let dispatch = useDispatch()
   const storage = getStorage();
   const storageRef = ref(storage, `profile/${userData.uid}`);
-  // mordal
+  // mordal for image croping
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  // mordal for username
+  const [open2, setOpen2] = React.useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
+  let [namechange, setNamechange]=useState("")
   // cropper
  const [image, setImage] = useState("");
   const [cropData, setCropData] = useState("#");
@@ -93,6 +94,20 @@ const RootLayout = () => {
       navigate("/login")
       }) 
 } 
+let handleUserName =()=>{ 
+   set(rref(db, 'users/' + userData.uid), {
+    username: namechange,
+    email: userData.email,
+    profile_picture: userData.photoURL
+  }).then(()=>{
+    localStorage.setItem("user",JSON.stringify({...userData,displayName:namechange}))
+    dispatch(userdata({...userData,displayName:namechange}))
+    setOpen2(false)
+  }) 
+}
+let handleInputName= (e)=>{ 
+    setNamechange(e.target.value)
+}
   return (
     <>
          <Grid container spacing={2}>
@@ -100,7 +115,7 @@ const RootLayout = () => {
             <div className='navbar'>
               <div className="navcontainer">
                 <img onClick={handleOpen} src={userData.photoURL} />
-                <h4 className='username'>{userData.displayName} <MdOutlineDriveFileRenameOutline className='username-icon'/></h4>
+                <h4 className='username'>{userData.displayName} <MdOutlineDriveFileRenameOutline onClick={handleOpen2} className='username-icon'/></h4>
                 
                 <ul>
                   <li>
@@ -128,6 +143,7 @@ const RootLayout = () => {
           <Outlet/>
         </Grid> 
       </Grid>
+      {/* image cropper modal */}
         <Modal
         open={open}
         onClose={handleClose}
@@ -172,6 +188,25 @@ const RootLayout = () => {
         </Box>
       </Modal>
 
+      {/* username change modal */}
+      <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Change your UserName
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+             <div>
+             <TextField id="outlined-basic" onChange={handleInputName} style={{display:"block", marginBottom:"10px"}} label={userData.displayName} variant="outlined" />
+             <Button onClick={handleUserName} variant="contained">Confrom</Button>
+             </div>
+          </Typography>
+        </Box>
+      </Modal>
     </>
   )
 }
